@@ -3,6 +3,7 @@ package tamaSystem;
 import tamaDialogs.DialogEngine;
 import tamaDialogs.TalkingToTamaEngine;
 import tamaGUI.TamaGUI;
+import tamaGUI.TamaGUIEnd;
 import tamaGUI.TamaGUIFace;
 import tamaGUI.TamaGUILogIn;
 import tamaGUI.TamaGUIStart;
@@ -17,7 +18,7 @@ import tamaGUI.TamaGUIStart;
 
 public class GameEngine implements Runnable{
 
-	private WinAndEndEngine we = new WinAndEndEngine();
+	private WinAndEndEngine we;
 	private DepressionEngine de = new DepressionEngine();
 	private HungerEngine he = new HungerEngine();
 	private TamaGUI tg;
@@ -29,10 +30,17 @@ public class GameEngine implements Runnable{
 	private TamaGUILogIn tgli = new TamaGUILogIn();
 	private GameEngine ge;
 	private UserEngine ue;
+	private TamaGUIEnd tge = new TamaGUIEnd();
 	//	private MySQLEngine mysql = new MySQLEngine();
 
 	private String tamaName = "";
 	private int gameLevel;
+	public int getGameLevel() {
+		return gameLevel;
+	}
+	public void setGameLevel(int gameLevel) {
+		this.gameLevel = gameLevel;
+	}
 
 	private void initiater(){
 		Thread depEngine = new Thread(de, "DepressionThread");
@@ -105,13 +113,13 @@ public class GameEngine implements Runnable{
 	public void startGameGUI(int gameLevel, String frameTitle, String tamaName){
 		this.tamaName = tamaName;
 		this.gameLevel = gameLevel;
-		we.setGameLevel(gameLevel);
 		de.setGameLevel(gameLevel);
 		he.setGameLevel(gameLevel);
 		mo.setGameLevel(gameLevel);
 
 		tg = new TamaGUI(gameLevel, frameTitle, tamaName, he, mo, di, tt, de);
 		tgf = new TamaGUIFace(tg, gameLevel, de, he);
+		we = new WinAndEndEngine(ge, tge);
 		tg.GUIFrame.setVisible(true);
 	}
 
