@@ -31,7 +31,7 @@ public class GameEngine implements Runnable{
 	private GameEngine ge;
 	private UserEngine ue;
 	private TamaGUIEnd tge = new TamaGUIEnd();
-	//	private MySQLEngine mysql = new MySQLEngine();
+	private MySQLEngine mysql;
 
 	private String tamaName = "";
 	private int gameLevel;
@@ -58,6 +58,8 @@ public class GameEngine implements Runnable{
 		hunEngine.start();
 		monEngine.start();
 		tgfEngine.start();
+		
+		mysql = new MySQLEngine(ge);
 
 	}
 

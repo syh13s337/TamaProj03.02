@@ -15,6 +15,9 @@ import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
  * It will get DB and maybe get DB too.
  * 
  * MUST START SOMEWERE WHERE OTHER CLASS CAN GET GAMEVALUES?
+ * 
+ * 
+ * ADD CLOSERS!
  */
 
 public class MySQLEngine {
@@ -22,13 +25,16 @@ public class MySQLEngine {
 	private final String SERVER_NAME = "localhost";
 	private final String DATABASE_NAME = "dbprojecttama";
 	private final int PORT = 3306;
-
+	
+	
 	private MysqlDataSource ds;
 	private Connection con = null;
 	private	Statement queryCaller = null;
 	private ResultSet result = null;
 	private String inString = null;
-	private ArrayList <Integer> gameValues = new ArrayList<Integer>();
+	
+	protected GameEngine ge;
+	protected ArrayList <Integer> gameValues = new ArrayList<Integer>();
 
 	public void getMySQLDB(String user, String password){
 		connectionMethod(user, password);
@@ -36,8 +42,15 @@ public class MySQLEngine {
 		getGameValue();
 		testSYSO();//TEST METOD
 	}
+	
+	public MySQLEngine(GameEngine ge){
+		this.ge = ge;
+	}
+	
+	public MySQLEngine(){
+	}
 
-	private void connectionMethod(String user, String password){
+	protected void connectionMethod(String user, String password){
 		ds = new MysqlDataSource(); 
 		ds.setServerName(SERVER_NAME);
 		ds.setPort(PORT);

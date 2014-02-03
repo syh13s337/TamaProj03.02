@@ -9,17 +9,29 @@ package tamaSystem;
  * 3, GRANTS NEW USER.
  * 
  * 
+ *CHANGE LATER:
+ * tamaadmin GRANT privilage, so it dont get used in a bad way.
+ * 
+ * 
+ * ACCOUNT FOR ADMIN: STRING
+ * tamaadmin
+ * java13
+ * 
+ * ACCOUNT FOR INFOGETTER: STRING
+ * infogetter
+ * tamaproj
+ * 
  */
-public class UserEngine {
+public class UserEngine extends MySQLEngine {
 	
-	private GameEngine ge;
-	
-	
-	public UserEngine(GameEngine ge){
-		this.ge = ge;
-	}
 	
 	public UserEngine(){
+	}
+	
+	//CHANGE THE PASSWORD SYSTEM SO IT DONT SHOW...
+	private void createUsers(){
+		connectionMethod("tamaadmin", "java13");
+		
 	}
 	
 	public void logInChecker(String user, String password){
@@ -27,5 +39,5 @@ public class UserEngine {
 		System.out.println(password);
 		
 	}
-
+	
 }
