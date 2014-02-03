@@ -1,5 +1,7 @@
 package tamaDB;
 
+import java.sql.ResultSetMetaData;
+
 
 /*USER CLASS
  * THIS CLASS WORKS WITH USER/PASSWORD
@@ -23,29 +25,44 @@ package tamaDB;
  * 
  */
 public class UserEngine extends MySQLEngine {
-	
+
 	public UserEngine(){
 	}
-	
+
 	//CHANGE THE PASSWORD SYSTEM SO IT DONT SHOW...
-	private void createUsers(String UserName, String UserPassword){
+	public void createUsers(String userName, String userPassword){
 		connectionMethod("tamaadmin", "java13");
 		statementMethod();
-		
-		
+
+
+
+		//THE INJECTION STRING
+		System.out.println(createUserId() +  " " + userName + userPassword);
 	}
-	
-	public void logInChecker(String user, String password){
+
+	//CHECK IF THE USER IS ALREADY CREATED.
+	//DO A STATMENT METHOD
+	public void userChecker(String user){
+		String logInChecker = "SELECT * FROM user WHERE username = ? ;";
+		ps.setString(1, user);
+
 		System.out.println(user);
-		System.out.println(password);
-		
+
+
 	}
-	
+
 	//checks MySQL if there is more if this user.
 	//IF there is, can't create one.
 	private void checkUserToDb(){
-	
-		
 	}
-	
+
+	//GET INT# COUNT BY WHILE LOOP IN SUPER CLASS
+	//MAYBE ANOTHER WAY TO DO IT???
+	private int createUserId(){
+		selectMethod("SELECT userid FROM user; ");
+		int createUserId = rowCount + 1;
+		return createUserId;
+
+	}
+
 }

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import tamaSystem.GameEngine;
 
+import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 /*MySQL Engine
@@ -27,28 +28,31 @@ public class MySQLEngine {
 	private final String SERVER_NAME = "localhost";
 	private final String DATABASE_NAME = "dbprojecttama";
 	private final int PORT = 3306;
-	
-	
+
+
 	private MysqlDataSource ds;
 	private Connection con = null;
 	private	Statement queryCaller = null;
 	private ResultSet result = null;
+	protected PreparedStatement ps = null;
 	private String inString = null;
-	
+	private int nCols;
+
+	protected int rowCount;
 	protected GameEngine ge;
 	protected ArrayList <Integer> gameValues = new ArrayList<Integer>();
 
 	public void getMySQLDB(String user, String password){
 		connectionMethod(user, password);
-		statementMethod();
+		selectMethod("SELECT * FROM gamevalues;");
 		getGameValue();
 		testSYSO();//TEST METOD
 	}
-	
+
 	public MySQLEngine(GameEngine ge){
 		this.ge = ge;
 	}
-	
+
 	public MySQLEngine(){
 	}
 
@@ -93,31 +97,38 @@ public class MySQLEngine {
 		System.out.println("*****INSERT SUCCSESSFULL*****");
 		System.out.println("Adected rows: " + affectedRows);
 	}
-	
+
 	//INSERT, 
 
 	//select and get information, Need path to column.
-	private void resultMethod(){
+	protected void selectMethod(String querys){
 		try {
 			//SELECT
-			result = queryCaller.executeQuery("SELECT * FROM gamevalues;");
+			result = queryCaller.executeQuery(querys);
 			result.beforeFirst();
 			ResultSetMetaData resultInfo = result.getMetaData();
-			int nCols = resultInfo.getColumnCount();
+			this.nCols = resultInfo.getColumnCount();
+
+			
+
 
 			for (int i = 1; i < nCols; i++) {
 				System.out.println(resultInfo.getColumnLabel(i) + " ");
 			}
 
 			while(result.next()){
+				//GET RESULT BY COLUM NAME
 				//				System.out.println(result.getString("first_name"));	
 				//				inString += " " + result.getString("first_name"); 
 
 				// DATA BAS STUFF always starts at 1, not 0 like in normal JAVA.
+				//GET ALL RESULT
 				for (int i = 1; i < nCols; i++) {
 					System.out.println(result.getString(i) + " ");
+
 				}
 				System.out.println();
+				rowCount++;
 			}
 
 		} catch (SQLException e) {
@@ -125,7 +136,6 @@ public class MySQLEngine {
 		}
 
 		System.out.println("*****QueryCaller succsess!*****");
-		//		System.out.println(inString);
 	}
 
 	public ArrayList<Integer> getGameValue(){
@@ -143,7 +153,7 @@ public class MySQLEngine {
 			while(result.next()){
 				// DATA BAS STUFF always starts at 1, not 0 like in normal JAVA.
 				for (int i = 1; i < nCols; i++) {
-				int	x = 0;
+					int	x = 0;
 					System.out.println(result.getInt(i) + " ");
 					gameValues.add(x, result.getInt(i));
 				}
@@ -183,6 +193,6 @@ public class MySQLEngine {
 	}
 
 	private void testSYSO(){
-			System.out.println(gameValues);
+		System.out.println(gameValues);
 	}
 }
