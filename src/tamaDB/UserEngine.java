@@ -1,4 +1,4 @@
-package tamaSystem;
+package tamaDB;
 
 
 /*USER CLASS
@@ -24,19 +24,27 @@ package tamaSystem;
  */
 public class UserEngine extends MySQLEngine {
 	
-	
 	public UserEngine(){
 	}
 	
 	//CHANGE THE PASSWORD SYSTEM SO IT DONT SHOW...
-	private void createUsers(){
+	private void createUsers(String UserName, String UserPassword){
 		connectionMethod("tamaadmin", "java13");
+		statementMethod();
+		
 		
 	}
 	
 	public void logInChecker(String user, String password){
 		System.out.println(user);
 		System.out.println(password);
+		
+	}
+	
+	//checks MySQL if there is more if this user.
+	//IF there is, can't create one.
+	private void checkUserToDb(){
+	
 		
 	}
 	

@@ -1,5 +1,7 @@
 package tamaSystem;
 
+import tamaDB.MySQLEngine;
+import tamaDB.UserEngine;
 import tamaDialogs.DialogEngine;
 import tamaDialogs.TalkingToTamaEngine;
 import tamaGUI.TamaGUI;

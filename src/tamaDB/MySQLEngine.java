@@ -1,4 +1,4 @@
-package tamaSystem;
+package tamaDB;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -6,6 +6,8 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
+import tamaSystem.GameEngine;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
@@ -67,7 +69,7 @@ public class MySQLEngine {
 	}
 
 
-	private void statementMethod(){
+	protected void statementMethod(){
 		try {
 			queryCaller = con.createStatement();
 		} catch (SQLException e) {
