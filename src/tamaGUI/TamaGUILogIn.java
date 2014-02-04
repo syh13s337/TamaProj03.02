@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -47,28 +48,10 @@ public class TamaGUILogIn {
 	private GameEngine ge;
 	private UserEngine ue;
 
-
-	/**
-	 * Launch the application.
-	 */
-	//	public static void main(String[] args) {
-	//		EventQueue.invokeLater(new Runnable() {
-	//			public void run() {
-	//				try {
-	//					TamaGUILogIn window = new TamaGUILogIn();
-	//					window.frameLogIn.setVisible(true);
-	//				} catch (Exception e) {
-	//					e.printStackTrace();
-	//				}
-	//			}
-	//		});
-	//	}
-
 	public void loginStarter(GameEngine ge, UserEngine ue){
 		this.ue = ue;
 		this.ge = ge;
 		frameLogIn.setVisible(true);
-
 	}
 
 	public TamaGUILogIn() {
@@ -127,16 +110,20 @@ public class TamaGUILogIn {
 	}
 
 	private void btnLogIn(){
+		popUpMessage("Test");
 	}
 
 	private void btnCreateUser(){
 		try{
-			ue = new UserEngine();
 			ue.createUsers(textFieldUserName.getText(), txtEnterPassword.getText());
-
 		}
 		catch(Exception e){
 			System.out.println("NOT WORKING YET");
 		}
-	}	
+	}
+	
+	public void popUpMessage(String inStr){
+		JOptionPane.showMessageDialog(null, inStr, "Message", JOptionPane.ERROR_MESSAGE); 		
+	}
+ 
 }

@@ -2,6 +2,8 @@ package tamaDB;
 
 import java.sql.SQLException;
 
+import tamaGUI.TamaGUILogIn;
+
 import com.mysql.jdbc.PreparedStatement;
 
 
@@ -27,10 +29,14 @@ import com.mysql.jdbc.PreparedStatement;
  * 
  */
 public class UserEngine extends MySQLEngine {
-	private java.sql.PreparedStatement psString;
 
 	private String userName;
+	private TamaGUILogIn tgli;
 
+	public UserEngine(TamaGUILogIn tgli){
+		this.tgli = tgli;
+	}
+	
 	public UserEngine(){
 	}
 
@@ -42,20 +48,24 @@ public class UserEngine extends MySQLEngine {
 		userChecker(userName);
 
 
-
-
 		//THE INJECTION STRING
-		System.out.println(createUserId() +  " " + userName + userPassword);
+		//	System.out.println(getGameValue());
+		//	System.out.println(createUserId() +  " " + userName + userPassword);
 	}
 
 	//CHECK IF THE USER IS ALREADY CREATED.
-	//DO A STATMENT METHOD
+	//Make it say something of it is in use.
 	private void userChecker(String userName){
-		String logInChecker = "SELECT * FROM user WHERE username ='" + userName + "';";
-		selectMethod(logInChecker);
-		
-//		System.out.println(logInChecker);
+		String logInChecker = "SELECT * FROM user;";
+		selectMethodSingle(logInChecker);
 
+		for (int i = 1; i < getSelectMethodSingle().size(); i++) {
+			if (getSelectMethodSingle().get(i).equals(userName)){
+				tgli.popUpMessage("This name in use");
+				System.out.println("NAME IN USE");
+				break;
+			}
+		}
 	}
 
 	//checks MySQL if there is more if this user.
@@ -69,6 +79,5 @@ public class UserEngine extends MySQLEngine {
 		selectMethod("SELECT userid FROM user; ");
 		int createUserId = rowCount + 1;
 		return createUserId;
-
 	}
 }

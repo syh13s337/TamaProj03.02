@@ -29,7 +29,7 @@ public class GameEngine implements Runnable{
 	private DialogEngine di = new DialogEngine();
 	private TalkingToTamaEngine tt = new TalkingToTamaEngine();
 	private ScoreEngine se = new ScoreEngine();
-	private TamaGUILogIn tgli = new TamaGUILogIn();
+	private TamaGUILogIn tgli;
 	private GameEngine ge;
 	private UserEngine ue;
 	private TamaGUIEnd tge = new TamaGUIEnd();
@@ -60,9 +60,6 @@ public class GameEngine implements Runnable{
 		hunEngine.start();
 		monEngine.start();
 		tgfEngine.start();
-		
-		mysql = new MySQLEngine(ge);
-
 	}
 
 	public GameEngine(){
@@ -110,8 +107,13 @@ public class GameEngine implements Runnable{
 	}
 	
 	public void StartLogIn(){
-		TamaGUILogIn login = new TamaGUILogIn();
-		login.loginStarter(ge, ue);
+
+		tgli = new TamaGUILogIn();
+		ue = new UserEngine(tgli);
+		mysql = new MySQLEngine(ge, tgli);
+		
+		tgli.loginStarter(ge, ue);
+		
 	}
 
 	public void startGameGUI(int gameLevel, String frameTitle, String tamaName){

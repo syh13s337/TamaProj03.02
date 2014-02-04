@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import tamaGUI.TamaGUILogIn;
 import tamaSystem.GameEngine;
 
 import com.mysql.jdbc.PreparedStatement;
@@ -39,7 +40,12 @@ public class MySQLEngine {
 
 	protected int rowCount;
 	protected GameEngine ge;
+	protected TamaGUILogIn tgli;
 	protected ArrayList <Integer> gameValues = new ArrayList<Integer>();
+	private ArrayList <String> selectMethodSingle = new ArrayList<String>();
+	public ArrayList<String> getSelectMethodSingle() {
+		return selectMethodSingle;
+	}
 
 	public void getMySQLDB(String user, String password){
 		connectionMethod(user, password);
@@ -48,7 +54,8 @@ public class MySQLEngine {
 		testSYSO();//TEST METOD
 	}
 
-	public MySQLEngine(GameEngine ge){
+	public MySQLEngine(GameEngine ge, TamaGUILogIn tgli){
+		this.tgli = tgli;
 		this.ge = ge;
 	}
 
@@ -87,7 +94,6 @@ public class MySQLEngine {
 	//NOT FULLY WORKING YET
 	protected void preparedStatementMethod(String psString, String statementString){
 		try {
-
 			psStream = con.prepareStatement(psString);
 			psStream.setString(1, statementString);
 
@@ -131,11 +137,35 @@ public class MySQLEngine {
 				// DATA BAS STUFF always starts at 1, not 0 like in normal JAVA.
 				//GET ALL RESULT
 				for (int i = 1; i < nCols; i++) {
-					System.out.println(result.getString(i) + " ");
+					System.out.println(result.getString(i) + " : OUT PUT ");
 
 				}
 				System.out.println();
 				rowCount++;
+			}
+
+		} catch (SQLException e) {
+			System.out.println("-----QueryCaller ERROR!-----" + e.getMessage());
+		}
+		System.out.println("*****QueryCaller succsess!*****");
+	}
+
+	//CHECKS IF THE STRING SENDED ALREADY EXIT.
+	protected void selectMethodSingle(String querys){
+		try {
+			//SELECT
+			result = queryCaller.executeQuery(querys);
+			//			result.beforeFirst();
+			ResultSetMetaData resultInfo = result.getMetaData();
+			this.nCols = resultInfo.getColumnCount();
+
+
+			while(result.next()){
+				for (int i = 1; i < nCols; i++) {
+					System.out.println(result.getString(i));
+					selectMethodSingle.add(result.getString(i));
+
+				}
 			}
 
 		} catch (SQLException e) {
