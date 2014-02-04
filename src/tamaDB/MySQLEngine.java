@@ -20,7 +20,7 @@ import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
  * MUST START SOMEWERE WHERE OTHER CLASS CAN GET GAMEVALUES?
  * 
  * 
- * ADD CLOSERS!
+ * ADD CLOSERS!!!
  */
 
 public class MySQLEngine {
@@ -29,12 +29,11 @@ public class MySQLEngine {
 	private final String DATABASE_NAME = "dbprojecttama";
 	private final int PORT = 3306;
 
-
 	protected MysqlDataSource ds;
 	protected Connection con = null;
 	protected Statement queryCaller = null;
 	protected ResultSet result = null;
-	protected PreparedStatement ps = null;
+	protected java.sql.PreparedStatement psStream = null;
 	protected String inString = null;
 	protected int nCols;
 
@@ -64,7 +63,7 @@ public class MySQLEngine {
 
 		try {
 			//DO NOT SHOW PASSWORD CODE IN YOUR CLIENT
-			con = ds.getConnection(user, password); //try to connect to ds. With user and password.
+			this.con = ds.getConnection(user, password); //try to connect to ds. With user and password.
 		} catch (SQLException e) {
 			System.out.println("-----ERROR: Could not connect!-----"); //Good to make a syso, just to check where the problem is.
 			return;
@@ -85,20 +84,16 @@ public class MySQLEngine {
 		System.out.println("*****Statement Succsessfull!*****");
 	}
 
-	protected void preparedStatementMethod(java.sql.PreparedStatement preparedStatement){
+	//NOT FULLY WORKING YET
+	protected void preparedStatementMethod(String psString, String statementString){
 		try {
-			result = preparedStatement.executeQuery();
-			result.beforeFirst();
-			ResultSetMetaData resultInfo = result.getMetaData();
-			this.nCols = resultInfo.getColumnCount();
-			
-			for (int i = 1; i < nCols; i++) {
-				System.out.println(result.getString(i) + " ");
 
-			}
+			psStream = con.prepareStatement(psString);
+			psStream.setString(1, statementString);
 
+			psStream.executeQuery();
 		} catch (SQLException e) {
-			System.out.println("----preparedStatementMethod, ERROR ----");
+			System.out.println("----PreparedStatement, ERROR! ----");
 		}
 	}
 
@@ -125,13 +120,9 @@ public class MySQLEngine {
 			ResultSetMetaData resultInfo = result.getMetaData();
 			this.nCols = resultInfo.getColumnCount();
 
-
-
-
 			for (int i = 1; i < nCols; i++) {
 				System.out.println(resultInfo.getColumnLabel(i) + " ");
 			}
-
 			while(result.next()){
 				//GET RESULT BY COLUM NAME
 				//				System.out.println(result.getString("first_name"));	
@@ -150,7 +141,6 @@ public class MySQLEngine {
 		} catch (SQLException e) {
 			System.out.println("-----QueryCaller ERROR!-----" + e.getMessage());
 		}
-
 		System.out.println("*****QueryCaller succsess!*****");
 	}
 
@@ -179,7 +169,6 @@ public class MySQLEngine {
 			System.out.println("-----QueryCaller ERROR!-----" + e.getMessage()); //TESTER
 		}
 		System.out.println("*****QueryCaller succsess!*****"); //TESTER
-		closeEverything();
 		return gameValues;
 	}
 

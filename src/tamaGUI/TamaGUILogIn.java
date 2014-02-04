@@ -106,16 +106,17 @@ public class TamaGUILogIn {
 				btnLogIn();
 			}
 		});
-		btnLogin.setBounds(383, 398, 173, 29);
+		btnLogin.setBounds(383, 356, 173, 29);
 		frameLogIn.getContentPane().add(btnLogin);
 
 		JButton btnCreateUser = new JButton("Create User");
 		btnCreateUser.setToolTipText("Create User");
 		btnCreateUser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				btnCreateUser();
 			}
 		});
-		btnCreateUser.setBounds(383, 356, 173, 29);
+		btnCreateUser.setBounds(383, 398, 173, 29);
 		frameLogIn.getContentPane().add(btnCreateUser);
 
 
@@ -126,18 +127,16 @@ public class TamaGUILogIn {
 	}
 
 	private void btnLogIn(){
+	}
+
+	private void btnCreateUser(){
 		try{
-			UserEngine ue = new UserEngine();
+			ue = new UserEngine();
 			ue.createUsers(textFieldUserName.getText(), txtEnterPassword.getText());
-			
+
 		}
 		catch(Exception e){
 			System.out.println("NOT WORKING YET");
 		}
-	}
-
-	private void btnCreateUser(){
-
-
-	}
+	}	
 }

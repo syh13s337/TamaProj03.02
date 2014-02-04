@@ -28,7 +28,7 @@ import com.mysql.jdbc.PreparedStatement;
  */
 public class UserEngine extends MySQLEngine {
 	private java.sql.PreparedStatement psString;
-	
+
 	private String userName;
 
 	public UserEngine(){
@@ -39,26 +39,23 @@ public class UserEngine extends MySQLEngine {
 		this.userName=userName;
 		connectionMethod("tamaadmin", "java13");
 		statementMethod();
-		preparedStatementMethod(userChecker());
+		userChecker(userName);
 
 
 
 
 		//THE INJECTION STRING
-		//		System.out.println(createUserId() +  " " + userName + userPassword);
+		System.out.println(createUserId() +  " " + userName + userPassword);
 	}
 
 	//CHECK IF THE USER IS ALREADY CREATED.
 	//DO A STATMENT METHOD
-	public java.sql.PreparedStatement userChecker(){
-		try {
-			String logInChecker = "SELECT * FROM user WHERE username = ?; ";
-			psString = con.prepareStatement(logInChecker);
-			psString.setString(1, userName);
-		} catch (SQLException e) {
-			System.out.println("----ERROR, PreparedStatement ----");
-		}
-		return psString;
+	private void userChecker(String userName){
+		String logInChecker = "SELECT * FROM user WHERE username ='" + userName + "';";
+		selectMethod(logInChecker);
+		
+//		System.out.println(logInChecker);
+
 	}
 
 	//checks MySQL if there is more if this user.
@@ -74,5 +71,4 @@ public class UserEngine extends MySQLEngine {
 		return createUserId;
 
 	}
-
 }
