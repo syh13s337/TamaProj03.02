@@ -1,6 +1,8 @@
 package tamaDB;
 
-import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+
+import com.mysql.jdbc.PreparedStatement;
 
 
 /*USER CLASS
@@ -25,30 +27,38 @@ import java.sql.ResultSetMetaData;
  * 
  */
 public class UserEngine extends MySQLEngine {
+	private java.sql.PreparedStatement psString;
+	
+	private String userName;
 
 	public UserEngine(){
 	}
 
 	//CHANGE THE PASSWORD SYSTEM SO IT DONT SHOW...
 	public void createUsers(String userName, String userPassword){
+		this.userName=userName;
 		connectionMethod("tamaadmin", "java13");
 		statementMethod();
+		preparedStatementMethod(userChecker());
+
 
 
 
 		//THE INJECTION STRING
-		System.out.println(createUserId() +  " " + userName + userPassword);
+		//		System.out.println(createUserId() +  " " + userName + userPassword);
 	}
 
 	//CHECK IF THE USER IS ALREADY CREATED.
 	//DO A STATMENT METHOD
-	public void userChecker(String user){
-		String logInChecker = "SELECT * FROM user WHERE username = ? ;";
-		ps.setString(1, user);
-
-		System.out.println(user);
-
-
+	public java.sql.PreparedStatement userChecker(){
+		try {
+			String logInChecker = "SELECT * FROM user WHERE username = ?; ";
+			psString = con.prepareStatement(logInChecker);
+			psString.setString(1, userName);
+		} catch (SQLException e) {
+			System.out.println("----ERROR, PreparedStatement ----");
+		}
+		return psString;
 	}
 
 	//checks MySQL if there is more if this user.

@@ -30,13 +30,13 @@ public class MySQLEngine {
 	private final int PORT = 3306;
 
 
-	private MysqlDataSource ds;
-	private Connection con = null;
-	private	Statement queryCaller = null;
-	private ResultSet result = null;
+	protected MysqlDataSource ds;
+	protected Connection con = null;
+	protected Statement queryCaller = null;
+	protected ResultSet result = null;
 	protected PreparedStatement ps = null;
-	private String inString = null;
-	private int nCols;
+	protected String inString = null;
+	protected int nCols;
 
 	protected int rowCount;
 	protected GameEngine ge;
@@ -72,7 +72,6 @@ public class MySQLEngine {
 		System.out.println("*****Connection succsessfull!*****"); //Good to make a syso that tells that its online.
 	}
 
-
 	protected void statementMethod(){
 		try {
 			queryCaller = con.createStatement();
@@ -84,6 +83,23 @@ public class MySQLEngine {
 			System.out.println("-----STATETMENT ERROR!" + e.getMessage());
 		}
 		System.out.println("*****Statement Succsessfull!*****");
+	}
+
+	protected void preparedStatementMethod(java.sql.PreparedStatement preparedStatement){
+		try {
+			result = preparedStatement.executeQuery();
+			result.beforeFirst();
+			ResultSetMetaData resultInfo = result.getMetaData();
+			this.nCols = resultInfo.getColumnCount();
+			
+			for (int i = 1; i < nCols; i++) {
+				System.out.println(result.getString(i) + " ");
+
+			}
+
+		} catch (SQLException e) {
+			System.out.println("----preparedStatementMethod, ERROR ----");
+		}
 	}
 
 	//INSERT, ONE
@@ -98,7 +114,7 @@ public class MySQLEngine {
 		System.out.println("Adected rows: " + affectedRows);
 	}
 
-	//INSERT, 
+	//INSERT, MORE
 
 	//select and get information, Need path to column.
 	protected void selectMethod(String querys){
@@ -109,7 +125,7 @@ public class MySQLEngine {
 			ResultSetMetaData resultInfo = result.getMetaData();
 			this.nCols = resultInfo.getColumnCount();
 
-			
+
 
 
 			for (int i = 1; i < nCols; i++) {
@@ -195,4 +211,5 @@ public class MySQLEngine {
 	private void testSYSO(){
 		System.out.println(gameValues);
 	}
+
 }

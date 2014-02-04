@@ -128,7 +128,7 @@ public class TamaGUILogIn {
 	private void btnLogIn(){
 		try{
 			UserEngine ue = new UserEngine();
-			ue.logInChecker(textFieldUserName.getText(), txtEnterPassword.getText());
+			ue.createUsers(textFieldUserName.getText(), txtEnterPassword.getText());
 			
 		}
 		catch(Exception e){
