@@ -1,4 +1,4 @@
-package tamaGUI;
+package tamaDB;
 
 import java.awt.Color;
 import java.awt.Toolkit;
@@ -11,7 +11,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import tamaDB.UserEngine;
 import tamaSystem.GameEngine;
 
 /*LOG IN GUI CLASS
@@ -47,10 +46,13 @@ public class TamaGUILogIn {
 	private JTextArea textLogInInformation = new JTextArea();
 	private GameEngine ge;
 	private UserEngine ue;
+	private TamaGUICreateUser tgcu;
+	private TamaGUILogIn tgli;
 
-	public void loginStarter(GameEngine ge, UserEngine ue){
-		this.ue = ue;
+	public void loginStarter(GameEngine ge,TamaGUILogIn tgli, UserEngine ue){
 		this.ge = ge;
+		this.tgli = tgli;
+		this.ue = ue;
 		frameLogIn.setVisible(true);
 	}
 
@@ -108,22 +110,25 @@ public class TamaGUILogIn {
 		textLogInInformation.setBounds(15, 16, 541, 325);
 		frameLogIn.getContentPane().add(textLogInInformation);
 	}
+	
+	//NOTE FIXA KOD
 
 	private void btnLogIn(){
-		popUpMessage("Test");
+		ue.userLogIn(textFieldUserName.getText(), txtEnterPassword.getText());
 	}
 
 	private void btnCreateUser(){
-		try{
-			ue.createUsers(textFieldUserName.getText(), txtEnterPassword.getText());
+		if (tgcu==null){
+			tgcu = new TamaGUICreateUser(ge, tgli, ue, tgcu);
+			tgcu.tamaGUICreatUserStart();
+			frameLogIn.setVisible(false);
 		}
-		catch(Exception e){
-			System.out.println("NOT WORKING YET");
+		else if (tgcu != null){
 		}
 	}
-	
+
 	public void popUpMessage(String inStr){
 		JOptionPane.showMessageDialog(null, inStr, "Message", JOptionPane.ERROR_MESSAGE); 		
 	}
- 
+
 }

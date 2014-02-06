@@ -1,9 +1,6 @@
 package tamaDB;
 
 import java.sql.SQLException;
-
-import tamaGUI.TamaGUILogIn;
-
 import com.mysql.jdbc.PreparedStatement;
 
 
@@ -40,7 +37,7 @@ public class UserEngine extends MySQLEngine {
 	public UserEngine(){
 	}
 
-	//CHANGE THE PASSWORD SYSTEM SO IT DONT SHOW...
+	//CREAT A USER
 	public void createUsers(String userName, String userPassword){
 		this.userName=userName;
 		connectionMethod("tamaadmin", "java13");
@@ -52,27 +49,45 @@ public class UserEngine extends MySQLEngine {
 		//	System.out.println(getGameValue());
 		//	System.out.println(createUserId() +  " " + userName + userPassword);
 	}
+	//LOG IN A USER
+	public void userLogIn(String userName, String userPassword){
+		this.userName=userName;
+		connectionMethod("tamaadmin", "java13");
+		statementMethod();
+		
+		String checkName = "SELECT username, password FROM user WHERE username='" + userName + "';";
+		String passWord = "SELECT username='" + userName + "' FROM user WHERE password='" + userPassword + "';";
+		selectMethodSingle(passWord);
+		
+		System.out.println("Out" + selectMethodSingle(passWord));
+		
+//		clearSelectMethodSingleArray();
+	}
 
 	//CHECK IF THE USER IS ALREADY CREATED.
-	//Make it say something of it is in use.
 	private void userChecker(String userName){
-		String logInChecker = "SELECT * FROM user;";
-		selectMethodSingle(logInChecker);
 
-		for (int i = 1; i < getSelectMethodSingle().size(); i++) {
-			if (getSelectMethodSingle().get(i).equals(userName)){
-				tgli.popUpMessage("This name in use");
-				System.out.println("NAME IN USE");
-				break;
-			}
+		String logInChecker = "SELECT username, password FROM user WHERE username='" + userName + "';";
+//		selectMethodSingle(logInChecker);
+		
+		if (selectMethodSingle(logInChecker).equals(userName)){
+			tgli.popUpMessage("This name in use");
+			System.out.println(getSelectMethodSingle().toString());
 		}
+		
+
+//		for (int i = 0; i < getSelectMethodSingle().size(); i++) {
+//			if (getSelectMethodSingle().get(i).equals(userName)){
+//				tgli.popUpMessage("This name in use");
+//				break;
+//			}
+//		}
 	}
 
-	//checks MySQL if there is more if this user.
-	//IF there is, can't create one.
-	private void checkUserToDb(){
-	}
-
+	/** <3 ANNIKA <3 
+	* Metoden som räknar rows och plussar med 1, för att skapa ny
+	* id key.
+	*/ 	
 	//GET INT# COUNT BY WHILE LOOP IN SUPER CLASS
 	//MAYBE ANOTHER WAY TO DO IT???
 	private int createUserId(){

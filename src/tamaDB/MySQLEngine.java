@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import tamaGUI.TamaGUILogIn;
 import tamaSystem.GameEngine;
 
 import com.mysql.jdbc.PreparedStatement;
@@ -19,6 +18,10 @@ import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
  * It will get DB and maybe get DB too.
  * 
  * MUST START SOMEWERE WHERE OTHER CLASS CAN GET GAMEVALUES?
+ * 
+ * 
+ * CHECKA INDEX SYTAX/SYSTEM:
+ * FOR FASTER SEARCH AND FINIDNG VALUES.
  * 
  * 
  * ADD CLOSERS!!!
@@ -42,7 +45,12 @@ public class MySQLEngine {
 	protected GameEngine ge;
 	protected TamaGUILogIn tgli;
 	protected ArrayList <Integer> gameValues = new ArrayList<Integer>();
-	private ArrayList <String> selectMethodSingle = new ArrayList<String>();
+	protected String tmpString;
+	
+	private ArrayList <String> selectMethodSingle;
+	public void clearSelectMethodSingleArray(){
+		this.selectMethodSingle.clear();
+	}
 	public ArrayList<String> getSelectMethodSingle() {
 		return selectMethodSingle;
 	}
@@ -117,7 +125,7 @@ public class MySQLEngine {
 
 	//INSERT, MORE
 
-	//select and get information, Need path to column.
+	//Select and get information, Need path to column.
 	protected void selectMethod(String querys){
 		try {
 			//SELECT
@@ -138,7 +146,6 @@ public class MySQLEngine {
 				//GET ALL RESULT
 				for (int i = 1; i < nCols; i++) {
 					System.out.println(result.getString(i) + " : OUT PUT ");
-
 				}
 				System.out.println();
 				rowCount++;
@@ -150,28 +157,34 @@ public class MySQLEngine {
 		System.out.println("*****QueryCaller succsess!*****");
 	}
 
-	//CHECKS IF THE STRING SENDED ALREADY EXIT.
-	protected void selectMethodSingle(String querys){
+	//select method type 2 Returns a String.
+	protected String selectMethodSingle(String querys){
+		tmpString = "";
+//		selectMethodSingle = new ArrayList<String>();
 		try {
 			//SELECT
 			result = queryCaller.executeQuery(querys);
-			//			result.beforeFirst();
+			result.beforeFirst();
 			ResultSetMetaData resultInfo = result.getMetaData();
 			this.nCols = resultInfo.getColumnCount();
-
-
+			
 			while(result.next()){
 				for (int i = 1; i < nCols; i++) {
-					System.out.println(result.getString(i));
-					selectMethodSingle.add(result.getString(i));
-
+//					selectMethodSingle.add(result.getString(i));
+					
+					tmpString += result.getString(i);
 				}
 			}
-
 		} catch (SQLException e) {
 			System.out.println("-----QueryCaller ERROR!-----" + e.getMessage());
 		}
 		System.out.println("*****QueryCaller succsess!*****");
+//		tmpString = selectMethodSingle.toString();
+//		
+//		System.out.println(tmpString + " STRING");
+//		System.out.println(selectMethodSingle + " array");
+		
+		return tmpString;
 	}
 
 	public ArrayList<Integer> getGameValue(){
@@ -230,5 +243,4 @@ public class MySQLEngine {
 	private void testSYSO(){
 		System.out.println(gameValues);
 	}
-
 }

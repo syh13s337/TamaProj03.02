@@ -37,8 +37,8 @@ public class TamaGUIStart {
 	private JScrollPane scrollPane;
 	private int tmpX = 1;
 
-	private GameEngine ge = new GameEngine();
-	private Thread gEngine = new Thread(ge, "GameEngine");
+	private GameEngine ge;
+	Thread GameEngineThread = new Thread(ge, "STARTGAME");
 	
 	JButton btnStartLv1;
 
@@ -47,7 +47,11 @@ public class TamaGUIStart {
 		TamaGUIStart window = new TamaGUIStart();
 		window.frmTamav.setVisible(true);
 	}
-
+	
+	public TamaGUIStart(GameEngine ge){
+		this.ge=ge;
+	}
+	
 	public TamaGUIStart() {
 		initialize();
 	}
@@ -112,8 +116,8 @@ public class TamaGUIStart {
 					tamaName = txtEnterTamaName.getText();
 					frmTamav.setVisible(false);
 					
-					ge.startGameGUI(1, " : Baby (EasyMode)", tamaName);
-					gEngine.start();
+					ge.GameGUI(1, " : Baby (EasyMode)", tamaName);
+					GameEngineThread.start();
 				}
 				else {	
 					InfoText.setText("You need to enter a name for your Tama! ");
@@ -132,8 +136,8 @@ public class TamaGUIStart {
 					tamaName = txtEnterTamaName.getText();
 					frmTamav.setVisible(false);
 					
-					ge.startGameGUI(2, " : The Kid (NormalMode)", tamaName);
-					gEngine.start();
+					ge.GameGUI(2, " : The Kid (NormalMode)", tamaName);
+					GameEngineThread.start();
 				}
 				else {	
 					InfoText.setText("You need to enter a name for your Tama! ");
@@ -151,8 +155,8 @@ public class TamaGUIStart {
 					tamaName = txtEnterTamaName.getText();
 					frmTamav.setVisible(false);
 					
-					ge.startGameGUI(3, " : Young Adult (HardMode)", tamaName);
-					gEngine.start();
+					ge.GameGUI(3, " : Young Adult (HardMode)", tamaName);
+					GameEngineThread.start();
 
 				}
 				else {	

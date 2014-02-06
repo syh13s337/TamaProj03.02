@@ -1,10 +1,8 @@
-package tamaGUI;
+package tamaDB;
 
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import javax.swing.BoxLayout;
-import java.awt.BorderLayout;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -21,6 +19,7 @@ public class TamaGUILOGIN_TEST {
 	private JTextField txtEnterPassword;
 	private JTextField txtReenterPassword;
 	private JTextField txtTypeInCatcha;
+	private JLabel lblCaptcha;
 
 	/**
 	 * Launch the application.
@@ -104,7 +103,7 @@ public class TamaGUILOGIN_TEST {
 		frameLogIn.getContentPane().add(txtReenterPassword);
 		txtReenterPassword.setColumns(10);
 		
-		JLabel lblCaptcha = new JLabel("Capthca");
+		lblCaptcha = new JLabel("Capthca");
 		lblCaptcha.setToolTipText("Capthca");
 		lblCaptcha.setBounds(15, 256, 231, 72);
 		frameLogIn.getContentPane().add(lblCaptcha);
