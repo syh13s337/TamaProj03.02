@@ -25,7 +25,6 @@ public class TamaGUIFace implements Runnable {
 
 	private static final long serialVersionUID = 1L;
 
-	private JLabel label;
 	private ArrayList <ImageIcon> faces;
 	private TamaGUI tg;
 	private int gameLevel;
@@ -43,6 +42,7 @@ public class TamaGUIFace implements Runnable {
 		this.he = he;
 	}
 
+	//WHERE THE IMAGE GET PICKED FROM ARRAYLIST AND SENDS TO TAMAGUI CLASS, TO UPDATE LABE.
 	private void animationUpdater(){
 		if (x >= 7 || y >= 9){
 			x = 0;

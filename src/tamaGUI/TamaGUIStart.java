@@ -4,13 +4,10 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-
 import java.awt.Color;
-
 import javax.swing.JButton;
 
 import tamaSystem.GameEngine;
-
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -24,7 +21,7 @@ import java.awt.event.ActionEvent;
  *
  */
 
-public class TamaGUIStart {
+public class TamaGUIStart extends JFrame {
 
 	public static boolean ALL_THREADS_RUNNING = true;
 
@@ -38,20 +35,14 @@ public class TamaGUIStart {
 	private int tmpX = 1;
 
 	private GameEngine ge;
-	Thread GameEngineThread = new Thread(ge, "STARTGAME");
-	
-	JButton btnStartLv1;
 
 	//the starter, with own runnable
-	public void TamaStartGUIStarter(){
-		TamaGUIStart window = new TamaGUIStart();
-		window.frmTamav.setVisible(true);
-	}
-	
-	public TamaGUIStart(GameEngine ge){
+	public void TamaStartGUIStarter(GameEngine ge){
+		frmTamav.setVisible(true);
 		this.ge=ge;
 	}
-	
+
+
 	public TamaGUIStart() {
 		initialize();
 	}
@@ -60,7 +51,7 @@ public class TamaGUIStart {
 	private void initialize() {
 		frmTamav = new JFrame();
 		frmTamav.setResizable(false);
-		frmTamav.setTitle("Tama.v2 ");
+		frmTamav.setTitle(GameEngine.TAMA_VERSION);
 		frmTamav.getContentPane().setBackground(Color.WHITE);
 		frmTamav.getContentPane().setForeground(Color.WHITE);
 		frmTamav.setBounds(100, 100, 450, 300);
@@ -115,9 +106,9 @@ public class TamaGUIStart {
 				if(!tamaName.equals("Enter Tama name, and pick level! ")) {
 					tamaName = txtEnterTamaName.getText();
 					frmTamav.setVisible(false);
-					
+
 					ge.GameGUI(1, " : Baby (EasyMode)", tamaName);
-					GameEngineThread.start();
+
 				}
 				else {	
 					InfoText.setText("You need to enter a name for your Tama! ");
@@ -135,9 +126,9 @@ public class TamaGUIStart {
 				if(!tamaName.equals("Enter Tama name, and pick level! ")) {
 					tamaName = txtEnterTamaName.getText();
 					frmTamav.setVisible(false);
-					
+
 					ge.GameGUI(2, " : The Kid (NormalMode)", tamaName);
-					GameEngineThread.start();
+
 				}
 				else {	
 					InfoText.setText("You need to enter a name for your Tama! ");
@@ -154,9 +145,9 @@ public class TamaGUIStart {
 				if(!tamaName.equals("Enter Tama name, and pick level! ")) {
 					tamaName = txtEnterTamaName.getText();
 					frmTamav.setVisible(false);
-					
+
 					ge.GameGUI(3, " : Young Adult (HardMode)", tamaName);
-					GameEngineThread.start();
+
 
 				}
 				else {	

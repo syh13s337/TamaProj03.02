@@ -20,20 +20,23 @@ package tamaStart;
  * 
  */
 
+import tamaGUI.TamaGUIStart;
 import tamaSystem.GameEngine;
 
 public class TamaStartClass {
 
 	public static void main(String[] args) {
-		GameEngine ge = null;
-		ge = new GameEngine(ge);
-		
+		GameEngine ge = new GameEngine();
+		ge.setGe(ge);
 		ge.GameGuiStart();
-		
 
-//		ge.StartLogIn();
-		
-		
+		//		TamaGUIStart tgs = new TamaGUIStart();
+		//		tgs.TamaStartGUIStarter();
+
+
+		//		ge.StartLogIn();
+
+
 	}
 }
 

@@ -21,6 +21,7 @@ public class HungerEngine implements Runnable  {
 	//
 	private int tamaCurrentHunger = 10000;
 	private int hungerValue = 30;
+	private TamaGUI tg;
 
 	//HungerBuilder, Thread sleep timer.
 	private final int hungerBuilderTimeValue = 1000;
@@ -33,6 +34,7 @@ public class HungerEngine implements Runnable  {
 	private final int foodDeacreses3 = -3000;
 	private Random intGenerator = new Random();
 	private boolean deathByHunger = false;
+	
 
 	private int gameLevel;
 	public int getGameLevel() {
@@ -43,13 +45,16 @@ public class HungerEngine implements Runnable  {
 		this.gameLevel = gameLevel;
 	}
 
-	public HungerEngine(){
+	public HungerEngine(TamaGUI tg){
+		this.tg = tg;
 	}
 
 	//The loop
 	@Override
 	public void run() {
+		
 		while(TamaGUIStart.ALL_THREADS_RUNNING == true){
+			tg.setHungerBar();
 			hungerWarnings();
 			TamaEatsAtFriend();
 			hungerBuilder(hungerBuilderTimeValue);

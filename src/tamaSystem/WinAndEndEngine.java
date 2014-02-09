@@ -1,5 +1,6 @@
 package tamaSystem;
 
+import tamaGUI.TamaGUI;
 import tamaGUI.TamaGUIEnd;
 import tamaGUI.TamaGUIStart;
 
@@ -16,16 +17,38 @@ public class WinAndEndEngine implements Runnable {
 	private boolean win = false;
 	private GameEngine ge;
 	private	TamaGUIEnd tge;
+	private TamaGUI tg;
+	private DepressionEngine de;
+	private HungerEngine he;
 
 	//in seconds
 	private int tamaWinTimer;
 
-	public WinAndEndEngine(GameEngine ge, TamaGUIEnd tge){
+	public WinAndEndEngine(GameEngine ge, TamaGUIEnd tge,
+			DepressionEngine de, HungerEngine he){
 		this.ge = ge;
 		this.tge = tge;
+		this.de = de;
+		this.he = he;
 	}
 	
-	public WinAndEndEngine(){
+	public WinAndEndEngine(TamaGUI tg){
+		this.tg=tg;
+	}
+	
+	private void deathAndWinChecker(){
+		if (de.isDeathByDepression() == true){
+			deathByDepression(ge.getTamaName());
+			tg.showGUI(false);
+		}
+		else if(he.isDeathByHunger() == true){
+			deathByHunger(ge.getTamaName());
+			tg.showGUI(false);
+		}
+		else if (isWin() == true){
+			winning(ge.getTamaName());
+			tg.showGUI(false);
+		}
 	}
 	
 	//The loop, Win checker
@@ -46,6 +69,7 @@ public class WinAndEndEngine implements Runnable {
 				}
 				else if (x != tamaWinTimer){
 					try {
+						deathAndWinChecker();
 						x++;
 						Thread.sleep(1000);
 					} catch (InterruptedException e) {

@@ -18,6 +18,7 @@ public class MoneyEngine implements Runnable{
 	//Note: In case future upgrade/change the variables is here.
 	private int currentMoney = 10000;
 	private Random intGenerator = new Random();
+	private TamaGUI tg;
 	private int gameLevel;
 	public int getGameLevel() {
 		return gameLevel;
@@ -26,16 +27,23 @@ public class MoneyEngine implements Runnable{
 	public void setGameLevel(int gameLevel) {
 		this.gameLevel = gameLevel;
 	}
+	
+	public MoneyEngine(TamaGUI tg){
+		this.tg=tg;
+	}
+	
+	public MoneyEngine(){
+		
+	}
 
 	//the Loop
 	@Override
 	public void run() {
-
-
 		while(TamaGUIStart.ALL_THREADS_RUNNING == true){
 			if(currentMoney <= 0){
 				currentMoney = 0;
 			}
+			tg.setMoneyBar();
 			TamaFoundMoney();
 			TamaStealMoney();
 			moneyBarUpdaterTimer(1000);

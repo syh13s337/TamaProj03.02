@@ -21,6 +21,7 @@ public class DepressionEngine implements Runnable {
 	private int mouseHappiness = 20;
 	private int mouseHappinessSinker = 20;
 	private Random intGenerator = new Random();
+	private TamaGUI tg;
 
 	//Depression, Thread sleep timer.
 	protected final int depressionBuilderTimeValue = 1000;
@@ -31,15 +32,16 @@ public class DepressionEngine implements Runnable {
 		this.gameLevel = gameLevel;
 	}
 	
-	
-	
-	public DepressionEngine(){
+	public DepressionEngine(TamaGUI tg){
+		this.tg=tg;
 	}
+	
 
 	//the loop
 	@Override
 	public void run() {
 		while(TamaGUIStart.ALL_THREADS_RUNNING == true){
+			tg.setDepressionBar();	
 			depressionWarnings();
 			TamaRandomGoodMood();
 			TamaRandomDepression();
