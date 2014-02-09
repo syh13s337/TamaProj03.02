@@ -1,4 +1,4 @@
-package tamaGUI;
+package tamaDB;
 
 import java.awt.Color;
 import java.awt.Toolkit;
@@ -11,7 +11,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import tamaDB.UserEngine;
 import tamaSystem.GameEngine;
 
 /*LOG IN GUI CLASS
@@ -44,14 +43,25 @@ public class TamaGUILogIn {
 	private JTextField textFieldUserName;
 	private JTextField txtEnterPassword;
 
-	private JTextArea textLogInInformation = new JTextArea();
+	private JTextArea textLogInInformation;
+	public void setTextLogInInformation(JTextArea textLogInInformation) {
+		this.textLogInInformation = textLogInInformation;
+	}
+
 	private GameEngine ge;
 	private UserEngine ue;
-
-	public void loginStarter(GameEngine ge, UserEngine ue){
-		this.ue = ue;
+	private TamaGUICreateUser tgcu;
+	private TamaGUILogIn tgli;
+	private MySQLEngine mysql;
+	
+	public void loginStarter(GameEngine ge,TamaGUILogIn tgli, UserEngine ue, MySQLEngine mysql){
 		this.ge = ge;
+		this.tgli = tgli;
+		this.ue = ue;
+		this.mysql = mysql;
 		frameLogIn.setVisible(true);
+
+		mysql.getScores();
 	}
 
 	public TamaGUILogIn() {
@@ -61,13 +71,15 @@ public class TamaGUILogIn {
 	private void initialize() {
 		frameLogIn = new JFrame();
 		frameLogIn.getContentPane().setBackground(Color.WHITE);
-		frameLogIn.setForeground(Color.WHITE);
-		frameLogIn.getContentPane().setForeground(Color.WHITE);
+//		frameLogIn.setForeground(Color.WHITE);
+//		frameLogIn.getContentPane().setForeground(Color.WHITE);
 		frameLogIn.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\Arild\\Documents\\GitHub\\TamaProj03\\image\\Baby\\b3.png"));
 		frameLogIn.setResizable(false);
 		frameLogIn.setBounds(100, 100, 577, 476);
 		frameLogIn.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frameLogIn.getContentPane().setLayout(null);
+		
+
 
 		textFieldUserName = new JTextField();
 		textFieldUserName.setToolTipText("Enter Username");
@@ -102,28 +114,30 @@ public class TamaGUILogIn {
 		btnCreateUser.setBounds(383, 398, 173, 29);
 		frameLogIn.getContentPane().add(btnCreateUser);
 
-
+		textLogInInformation = new JTextArea();
+		textLogInInformation.setText("test");
 		textLogInInformation.setToolTipText("Log in information");
 		textLogInInformation.setEnabled(false);
 		textLogInInformation.setBounds(15, 16, 541, 325);
 		frameLogIn.getContentPane().add(textLogInInformation);
 	}
-
+	
 	private void btnLogIn(){
-		popUpMessage("Test");
+		ue.userLogIn(textFieldUserName.getText(), txtEnterPassword.getText());
 	}
 
 	private void btnCreateUser(){
-		try{
-			ue.createUsers(textFieldUserName.getText(), txtEnterPassword.getText());
+		if (tgcu==null){
+			tgcu = new TamaGUICreateUser(ge, tgli, ue, tgcu);
+			tgcu.tamaGUICreatUserStart();
+			frameLogIn.setVisible(false);
 		}
-		catch(Exception e){
-			System.out.println("NOT WORKING YET");
+		else if (tgcu != null){
 		}
 	}
-	
+
 	public void popUpMessage(String inStr){
 		JOptionPane.showMessageDialog(null, inStr, "Message", JOptionPane.ERROR_MESSAGE); 		
 	}
- 
+
 }

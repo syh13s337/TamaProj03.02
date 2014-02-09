@@ -7,7 +7,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import tamaGUI.TamaGUILogIn;
+import javax.swing.JTextArea;
+
 import tamaSystem.GameEngine;
 
 import com.mysql.jdbc.PreparedStatement;
@@ -19,6 +20,10 @@ import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
  * It will get DB and maybe get DB too.
  * 
  * MUST START SOMEWERE WHERE OTHER CLASS CAN GET GAMEVALUES?
+ * 
+ * 
+ * CHECKA INDEX SYTAX/SYSTEM:
+ * FOR FASTER SEARCH AND FINIDNG VALUES.
  * 
  * 
  * ADD CLOSERS!!!
@@ -42,7 +47,12 @@ public class MySQLEngine {
 	protected GameEngine ge;
 	protected TamaGUILogIn tgli;
 	protected ArrayList <Integer> gameValues = new ArrayList<Integer>();
-	private ArrayList <String> selectMethodSingle = new ArrayList<String>();
+	protected String tmpString;
+
+	private ArrayList <String> selectMethodSingle;
+	public void clearSelectMethodSingleArray(){
+		this.selectMethodSingle.clear();
+	}
 	public ArrayList<String> getSelectMethodSingle() {
 		return selectMethodSingle;
 	}
@@ -51,7 +61,6 @@ public class MySQLEngine {
 		connectionMethod(user, password);
 		selectMethod("SELECT * FROM gamevalues;");
 		getGameValue();
-		testSYSO();//TEST METOD
 	}
 
 	public MySQLEngine(GameEngine ge, TamaGUILogIn tgli){
@@ -117,8 +126,9 @@ public class MySQLEngine {
 
 	//INSERT, MORE
 
-	//select and get information, Need path to column.
+	//Select and get information, Need path to column.
 	protected void selectMethod(String querys){
+		JTextArea tmpJT = null;
 		try {
 			//SELECT
 			result = queryCaller.executeQuery(querys);
@@ -128,6 +138,10 @@ public class MySQLEngine {
 
 			for (int i = 1; i < nCols; i++) {
 				System.out.println(resultInfo.getColumnLabel(i) + " ");
+
+				//TEST
+				tmpJT.append(resultInfo.getColumnLabel(i) + " ");
+				tgli.setTextLogInInformation(tmpJT);
 			}
 			while(result.next()){
 				//GET RESULT BY COLUM NAME
@@ -135,11 +149,19 @@ public class MySQLEngine {
 				//				inString += " " + result.getString("first_name"); 
 
 				// DATA BAS STUFF always starts at 1, not 0 like in normal JAVA.
-				//GET ALL RESULT
-				for (int i = 1; i < nCols; i++) {
-					System.out.println(result.getString(i) + " : OUT PUT ");
+				//GET ALL RESULT		
+				//				for (int i = 1; i < nCols; i++) {
+				//					System.out.println(result.getString(i) + " : OUT PUT ");
+				//				}
+				String tamaname = result.getString("totalpoints");
+				String deathBy = result.getString("deathBy");
 
-				}
+
+				tmpJT.append(tamaname);
+				tgli.setTextLogInInformation(tmpJT);
+				tmpJT.append(deathBy);
+				tgli.setTextLogInInformation(tmpJT);
+
 				System.out.println();
 				rowCount++;
 			}
@@ -150,28 +172,34 @@ public class MySQLEngine {
 		System.out.println("*****QueryCaller succsess!*****");
 	}
 
-	//CHECKS IF THE STRING SENDED ALREADY EXIT.
-	protected void selectMethodSingle(String querys){
+	//select method type 2 Returns a String.
+	protected String selectMethodSingle(String querys){
+		tmpString = "";
+		//		selectMethodSingle = new ArrayList<String>();
 		try {
 			//SELECT
 			result = queryCaller.executeQuery(querys);
-			//			result.beforeFirst();
+			result.beforeFirst();
 			ResultSetMetaData resultInfo = result.getMetaData();
 			this.nCols = resultInfo.getColumnCount();
 
-
 			while(result.next()){
 				for (int i = 1; i < nCols; i++) {
-					System.out.println(result.getString(i));
-					selectMethodSingle.add(result.getString(i));
+					//					selectMethodSingle.add(result.getString(i));
 
+					tmpString += result.getString(i);
 				}
 			}
-
 		} catch (SQLException e) {
 			System.out.println("-----QueryCaller ERROR!-----" + e.getMessage());
 		}
 		System.out.println("*****QueryCaller succsess!*****");
+		//		tmpString = selectMethodSingle.toString();
+		//		
+		//		System.out.println(tmpString + " STRING");
+		//		System.out.println(selectMethodSingle + " array");
+
+		return tmpString;
 	}
 
 	public ArrayList<Integer> getGameValue(){
@@ -187,7 +215,7 @@ public class MySQLEngine {
 			}
 
 			while(result.next()){
-				// DATA BAS STUFF always starts at 1, not 0 like in normal JAVA.
+				//SELFNOTE DATA BAS STUFF always starts at 1, not 0 like in normal JAVA.
 				for (int i = 1; i < nCols; i++) {
 					int	x = 0;
 					System.out.println(result.getInt(i) + " ");
@@ -202,7 +230,35 @@ public class MySQLEngine {
 		return gameValues;
 	}
 
-	private void closeEverything(){
+	public void getScores(){
+		selectMethod("SELECT totalpoints, tamaname, deathby FROM scores ORDER BY totalpoints desc limit 10;");
+		//		selectMethod("SELECT * FROM scores;");	
+
+	}
+
+	//RESULT SET METHOD, get information
+	//DO SOMETHING WITH IT TO UPDATE JTEXTAREA
+	private void writeResultSet(ResultSet resultSet) throws SQLException {
+		// ResultSet is initially before the first data set
+		while (resultSet.next()) {
+			// It is possible to get the columns via name
+			// also possible to get the columns via the column number
+			// which starts at 1
+			// e.g. resultSet.getSTring(2);
+			String user = resultSet.getString("myuser");
+			String website = resultSet.getString("webpage");
+			String summary = resultSet.getString("summary");
+			String comment = resultSet.getString("comments");
+			System.out.println("User: " + user);
+			System.out.println("Website: " + website);
+			System.out.println("Summary: " + summary);
+			System.out.println("Comment: " + comment);
+		}
+	}
+
+
+
+	public void closeEverything(){
 		//CLOSE EVERYTHING
 		if(result != null){
 			try {
@@ -226,9 +282,4 @@ public class MySQLEngine {
 			}
 		}
 	}
-
-	private void testSYSO(){
-		System.out.println(gameValues);
-	}
-
 }

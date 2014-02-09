@@ -43,8 +43,6 @@ public class HungerEngine implements Runnable  {
 		this.gameLevel = gameLevel;
 	}
 
-
-
 	public HungerEngine(){
 	}
 

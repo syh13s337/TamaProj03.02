@@ -1,13 +1,13 @@
 package tamaSystem;
 
 import tamaDB.MySQLEngine;
+import tamaDB.TamaGUILogIn;
 import tamaDB.UserEngine;
 import tamaDialogs.DialogEngine;
 import tamaDialogs.TalkingToTamaEngine;
 import tamaGUI.TamaGUI;
 import tamaGUI.TamaGUIEnd;
 import tamaGUI.TamaGUIFace;
-import tamaGUI.TamaGUILogIn;
 import tamaGUI.TamaGUIStart;
 
 /**THE GAME ENGINE
@@ -33,6 +33,7 @@ public class GameEngine implements Runnable{
 	private GameEngine ge;
 	private UserEngine ue;
 	private TamaGUIEnd tge = new TamaGUIEnd();
+	private TamaGUIStart tgs;
 	private MySQLEngine mysql;
 
 	private String tamaName = "";
@@ -62,8 +63,12 @@ public class GameEngine implements Runnable{
 		tgfEngine.start();
 	}
 
+	public GameEngine(GameEngine ge){
+		this.ge=ge;
+	}
+	
 	public GameEngine(){
-
+		
 	}
 
 	private void deathAndWinChecker(String tamanName){
@@ -107,16 +112,24 @@ public class GameEngine implements Runnable{
 	}
 	
 	public void StartLogIn(){
-
 		tgli = new TamaGUILogIn();
 		ue = new UserEngine(tgli);
 		mysql = new MySQLEngine(ge, tgli);
 		
-		tgli.loginStarter(ge, ue);
-		
+
+		tgli.loginStarter(ge, tgli, ue, mysql);
+	}
+	
+	
+	
+	//The start luncher after log in.
+	public void GameGuiStart(){
+		tgs = new TamaGUIStart(ge);
+		tgs.TamaStartGUIStarter();
 	}
 
-	public void startGameGUI(int gameLevel, String frameTitle, String tamaName){
+	//The game main Game Gui.
+	public void GameGUI(int gameLevel, String frameTitle, String tamaName){
 		this.tamaName = tamaName;
 		this.gameLevel = gameLevel;
 		de.setGameLevel(gameLevel);
@@ -128,6 +141,8 @@ public class GameEngine implements Runnable{
 		we = new WinAndEndEngine(ge, tge);
 		tg.GUIFrame.setVisible(true);
 	}
+	
+
 
 	@Override
 	public void run() {
