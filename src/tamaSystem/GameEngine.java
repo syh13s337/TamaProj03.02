@@ -22,6 +22,7 @@ public class GameEngine {
 
 	//GAME VERSION, OH SNAP ITS STATIC!
 	public static String TAMA_VERSION = "<TamaProj 03.3> ";
+	public static String MADE_BY = "Arild Oderman";
 
 	//THE LOOP/ENGINE STOPPER, SHOULD BE CONNECTED TO ALL "4EVER" LOOPED THREAD.
 	private boolean ALL_TREADS_RUNNING = true;
@@ -75,8 +76,7 @@ public class GameEngine {
 	private void initiater(){
 		this.tg = new TamaGUI();
 		this.tge = new TamaGUIEnd();
-
-
+		
 		this.de = new DepressionEngine(ge, tg);
 		this.he = new HungerEngine(ge, tg);
 		this.mo = new MoneyEngine(ge, tg);
@@ -85,7 +85,6 @@ public class GameEngine {
 		this.tt = new TalkingToTamaEngine(tg);
 		this.se = new ScoreEngine(ge, tge);
 		this.we = new WinAndEndEngine(ge, tg, tge, de, he);
-
 	}
 
 	public GameEngine(){
@@ -129,14 +128,12 @@ public class GameEngine {
 	//THE MAIN GAME GUI
 	public void GameGUI(int gameLevel, String frameTitle, String tamaName){
 		initiater();
-		
+
 		this.tamaName = tamaName;
 		this.gameLevel = gameLevel;
 
 		tg.TamaGUI(gameLevel, frameTitle, tamaName, he, mo, di, tt, de);
 		this.tgf = new TamaGUIFace(ge, tg, de, he);
-
-		de.setGameLevel(gameLevel);
 
 		threadStarter();
 

@@ -38,7 +38,37 @@ public class TamaGUIStart extends JFrame {
 	private int tmpX = 1;
 
 	private GameEngine ge;
-
+	
+	private String gameInfoString = "Hi! You are now playing: " + GameEngine.TAMA_VERSION 
+			+ "\n"
+			+ "\nThe levels:"
+			+ "\nLevel, 1 Baby mode"
+			+ "\nIts on easy mode, and you just need to keep"
+			+ "\nthe Tama alive for 1h"
+			+ "\nLevel 2, Kid mode"
+			+ "\nNormal mode, you need to keep it alive 1h."
+			+ "\nLevel 3, Young Adult mode"
+			+ "\nNo limit, this is the end game."
+			+ "\nThe Tama may steal money "
+			+ "\nand get randomly dipressed "
+			+ "\nand start to be Emo."
+			+ "\n"
+			+ "\nTips:"
+			+ "\nDraging the mouse back "
+			+ "\nand forth on the frame will get you some Pesoh"
+			+ "\nClicking on the frame will make Tama a bit happyer."
+			+ "\nSorry for the spelling!"
+			+ "\nGame is at the moment Unbalanced";
+	private String aboutInfoString = GameEngine.TAMA_VERSION + " Made by:"
+							+ "\n" + GameEngine.MADE_BY							
+							+ "\nA Java13 project"
+							+ "\nGame is at the moment Unbalanced"
+							+ "\nand we love more feedback"
+							+ "\nMail at: arildoderman@gmail.com"
+							+ "\n"
+							+ "\nUpdate inc soon!";
+	
+	
 	//the starter, with own runnable
 	public void TamaStartGUIStarter(GameEngine ge){
 		frmTamav.setVisible(true);
@@ -63,26 +93,7 @@ public class TamaGUIStart extends JFrame {
 
 		//start text
 		InfoText = new JTextArea();
-		InfoText.setText("Hi! You are now playing: " + GameEngine.TAMA_VERSION 
-				+ "\n"
-				+ "\nThe levels:"
-				+ "\nLevel, 1 Baby mode"
-				+ "\nIts on easy mode, and you just need to keep"
-				+ "\nthe Tama alive for 1h"
-				+ "\nLevel 2, Kid mode"
-				+ "\nNormal mode, you need to keep it alive 1h."
-				+ "\nLevel 3, Young Adult mode"
-				+ "\nNo limit, this is the end game."
-				+ "\nThe Tama may steal money "
-				+ "\nand get randomly dipressed "
-				+ "\nand start to be Emo."
-				+ "\n"
-				+ "\nTips:"
-				+ "\nDraging the mouse back "
-				+ "\nand forth on the frame will get you some Pesoh"
-				+ "\nClicking on the frame will make Tama a bit happyer."
-				+ "\nSorry for the spelling!"
-				+ "\nGame is at the moment Unbalanced");
+		InfoText.setText(gameInfoString);
 
 		InfoText.setToolTipText("Info about Tama v2.");
 		InfoText.setBounds(139, 13, 281, 188);
@@ -169,37 +180,11 @@ public class TamaGUIStart extends JFrame {
 					tmpX = 1;
 				}
 				if (tmpX == 1){
-					InfoText.setText("Tama, Made by:"
-							+ "\nArild Oderman"
-							+ "\nJava13"
-							+ "\nGame is at the moment Unbalanced"
-							+ "\nand we love more feedback"
-							+ "\nMail at: arildoderman@gmail.com"
-							+ "\n"
-							+ "\nUpdate inc soon!");
+					InfoText.setText(aboutInfoString);
 					tmpX++;
 				}
 				else if (tmpX == 2){
-					InfoText.setText("Hi! You are now playing Tama.v2"
-							+ "\n"
-							+ "\nThe levels:"
-							+ "\nLevel, 1 Baby mode"
-							+ "\nIts on easy mode, and you just need to keep"
-							+ "\nthe Tama alive for 1h"
-							+ "\nLevel 2, Kid mode"
-							+ "\nNormal mode, you need to keep it alive 1h."
-							+ "\nLevel 3, Young Adult mode"
-							+ "\nNo limit, this is the end game."
-							+ "\nThe Tama may steal money "
-							+ "\nand get randomly dipressed "
-							+ "\nand start to be Emo."
-							+ "\n"
-							+ "\nTips:"
-							+ "\nDraging the mouse back "
-							+ "\nand forth on the frame will get you some Pesoh"
-							+ "\nClicking on the frame will make Tama a bit happyer."
-							+ "\nSorry for the spelling!"
-							+ "\nGame is at the moment Unbalanced");
+					InfoText.setText(gameInfoString);
 					tmpX++;
 				}
 			}

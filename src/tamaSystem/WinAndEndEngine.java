@@ -2,12 +2,11 @@ package tamaSystem;
 
 import tamaGUI.TamaGUI;
 import tamaGUI.TamaGUIEnd;
-import tamaGUI.TamaGUIStart;
 
 /** WIN ENGINE CLASS
  * This class is for winners! 
  * The class will will start a counter and when its reached
- *	player win Tama.
+ * player win Tama. It also check if Tama have died.
  * 
  *
  */
@@ -22,7 +21,7 @@ public class WinAndEndEngine implements Runnable {
 	private HungerEngine he;
 
 	//in seconds, 3600 = 1h
-	private int tamaWinTimer;
+	private int tamaWinTimer = 3600;
 
 	public WinAndEndEngine(GameEngine ge, TamaGUI tg, TamaGUIEnd tge,
 			DepressionEngine de, HungerEngine he){
@@ -40,42 +39,36 @@ public class WinAndEndEngine implements Runnable {
 		if (de.isDeathByDepression() == true){
 			deathByDepression(ge.getTamaName());
 			tg.showGUI(false);
-			ge.setALL_TREADS_RUNNING(false);
 		}
 		else if(he.isDeathByHunger() == true){
 			deathByHunger(ge.getTamaName());
 			tg.showGUI(false);
-			ge.setALL_TREADS_RUNNING(false);
 		}
 		else if (isWin() == true){
 			winning(ge.getTamaName());
 			tg.showGUI(false);
-			ge.setALL_TREADS_RUNNING(false);
 		}
 	}
 
-	//The loop, Win checker
+	//THE LOOP, WIN/DEATH CHECKER
 	@Override
 	public void run() {
-		tamaWinTimer = 3600;
-		
-		int x = 0;
+		int tmpTimeCounter = 0;
 
 		while(ge.isALL_TREADS_RUNNING() == true){
-			if(tamaWinTimer <= x){
+			if(tamaWinTimer <= tmpTimeCounter){
 				win = true;
 			}
-			else if (x != tamaWinTimer){
+			else if (tmpTimeCounter != tamaWinTimer){
 				try {
 					deathAndWinChecker();
-					x++;
+					tmpTimeCounter++;
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 			}
 		}
-
 	}
 
 

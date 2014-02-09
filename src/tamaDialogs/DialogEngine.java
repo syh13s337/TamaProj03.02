@@ -2,14 +2,7 @@ package tamaDialogs;
 
 import java.util.ArrayList;
 import java.util.Random;
-
-
-
-
-
-
 import tamaGUI.TamaGUI;
-import tamaGUI.TamaGUIStart;
 import tamaSystem.GameEngine;
 
 /** TAMA DIALOGS CLASS
@@ -29,7 +22,7 @@ import tamaSystem.GameEngine;
 
 public class DialogEngine implements Runnable {
 
-	//Set Max millisec on the random timer.
+	//THE MILI SECS THAT RANDOM WILL WORK WITH 0-50000
 	private final int setRandomTimerGenerator = 50000;
 
 	private String dialogString = "Let the Adventure Begin!";
@@ -41,7 +34,6 @@ public class DialogEngine implements Runnable {
 	private GameEngine ge;
 	private TamaGUI tg;
 
-
 	private Random intGenerator = new Random();
 	private int randomNumber;
 	private int randomTimerCount;
@@ -51,7 +43,7 @@ public class DialogEngine implements Runnable {
 		this.tg = tg;
 	}
 
-	//STARTS THE DIALOG ARRAY LIST
+	//STARTS/ADDS DIALOG IN ARRAY LISTS
 	private void dialogLister(){
 		dialogListLevel0();
 		dialogListLevel1();
@@ -71,7 +63,7 @@ public class DialogEngine implements Runnable {
 		dialogList0.add("(-.- )...");
 	}
 
-//DIALOG LEVEL 1, (EASY MODE) BABY 
+	//DIALOG LEVEL 1, (EASY MODE) BABY 
 	private void dialogListLevel1(){
 		dialogList1.add("grrrlll.......");
 		dialogList1.add("hu?!?!?.......");
@@ -87,7 +79,7 @@ public class DialogEngine implements Runnable {
 		dialogList1.add("Daah..........");
 	}
 
-//DIALOG LEVEL 2, (NORMAL MODE) THE KID,
+	//DIALOG LEVEL 2, (NORMAL MODE) THE KID,
 	private void dialogListLevel2(){
 		dialogList2.add("Haaj");
 		dialogList2.add("I should cal a friend");
@@ -121,7 +113,6 @@ public class DialogEngine implements Runnable {
 
 	//TIMER AND DIALOG GETTER
 	public void timerAndDialogs() throws InterruptedException{
-
 		tg.setTextArea(dialogString + "\n");
 		Thread.sleep(3000);
 

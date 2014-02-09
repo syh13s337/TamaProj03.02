@@ -11,7 +11,6 @@ import javax.swing.JTextArea;
 import tamaSystem.GameEngine;
  
 /** TAMA GUI END, just the end gui
- * This GUI is to show some statistics/information
  * 
  * 
  * 
@@ -38,7 +37,6 @@ public class TamaGUIEnd{
 	}
 
 	public TamaGUIEnd() {
-
 		initialize();
 	}
 
