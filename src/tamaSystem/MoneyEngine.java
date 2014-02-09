@@ -1,9 +1,9 @@
 package tamaSystem;
 
-import java.util.Random;
 
+import java.util.Random;
 import tamaGUI.TamaGUI;
-import tamaGUI.TamaGUIStart;
+
 
 /** MONEY ENGINE
  * 	This class is where the money is at!
@@ -19,19 +19,12 @@ public class MoneyEngine implements Runnable{
 	private int currentMoney = 10000;
 	private Random intGenerator = new Random();
 	private TamaGUI tg;
-	private int gameLevel;
-	public int getGameLevel() {
-		return gameLevel;
-	}
+	private GameEngine ge;
 
-	public void setGameLevel(int gameLevel) {
-		this.gameLevel = gameLevel;
-	}
-	
-	public MoneyEngine(TamaGUI tg){
-		this.tg=tg;
-	}
-	
+	public MoneyEngine(GameEngine ge, TamaGUI tg){
+		this.ge = ge;
+		this.tg = tg;
+	}	
 	public MoneyEngine(){
 		
 	}
@@ -39,7 +32,7 @@ public class MoneyEngine implements Runnable{
 	//the Loop
 	@Override
 	public void run() {
-		while(TamaGUIStart.ALL_THREADS_RUNNING == true){
+		while(ge.isALL_TREADS_RUNNING() == true){
 			if(currentMoney <= 0){
 				currentMoney = 0;
 			}
@@ -53,11 +46,11 @@ public class MoneyEngine implements Runnable{
 
 	//Random generate, the Tama going to steal money.
 	private void TamaStealMoney(){
-		if(gameLevel == 3){
+		if(ge.getGameLevel() == 3){
 			int rndNr = intGenerator.nextInt(32);
 			if (rndNr == 5){
 				moneyItem1();
-				TamaGUI.textArea.setText("Your Tama stole money from you"
+				tg.setTextArea("Your Tama stole money from you"
 						+ "\nLost 500 Pesoh");
 			}
 		}
@@ -65,11 +58,11 @@ public class MoneyEngine implements Runnable{
 
 	//Random generate, Tama finds money and gives it to player.
 	private void TamaFoundMoney(){
-		if(gameLevel >= 2){
+		if(ge.getGameLevel() >= 2){
 			int rndNr = intGenerator.nextInt(32);
 			if (rndNr == 5){
 				moneyGain2();
-				TamaGUI.textArea.setText("Your Tama found money and gave it to you"
+				tg.setTextArea("Your Tama found money and gave it to you"
 						+ "\nGained 300 Pesoh");
 			}
 		}

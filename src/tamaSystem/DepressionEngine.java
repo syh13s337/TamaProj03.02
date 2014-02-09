@@ -22,8 +22,9 @@ public class DepressionEngine implements Runnable {
 	private int mouseHappinessSinker = 20;
 	private Random intGenerator = new Random();
 	private TamaGUI tg;
+	private GameEngine ge;
 
-	//Depression, Thread sleep timer.
+	//DEPRESSION, THREAD SLEEPER VALUES
 	protected final int depressionBuilderTimeValue = 1000;
 	private boolean deathByDepression = false;
 
@@ -31,16 +32,17 @@ public class DepressionEngine implements Runnable {
 	public void setGameLevel(int gameLevel) {
 		this.gameLevel = gameLevel;
 	}
-	
-	public DepressionEngine(TamaGUI tg){
-		this.tg=tg;
-	}
-	
 
-	//the loop
+	public DepressionEngine(GameEngine ge, TamaGUI tg){
+		this.tg = tg;
+		this.ge = ge;
+	}
+
+
+	//THE LOOP
 	@Override
 	public void run() {
-		while(TamaGUIStart.ALL_THREADS_RUNNING == true){
+		while(ge.isALL_TREADS_RUNNING() == true){
 			tg.setDepressionBar();	
 			depressionWarnings();
 			TamaRandomGoodMood();
@@ -56,23 +58,23 @@ public class DepressionEngine implements Runnable {
 			int rndNr = intGenerator.nextInt(32);
 			if (rndNr == 5){
 				happinessLevel1();
-				TamaGUI.textArea.setText("Your Tama got depressed"
+				tg.setTextArea("Your Tama got depressed"
 						+ "\nLost 500 Happiness");
 			}
 		}
 	}
 
-	//Random generate, good mood for Tama
+	//RANDOM GENERATE, TAMA IN GOOD MOOD
 	private void TamaRandomGoodMood(){
 		int rndNr = intGenerator.nextInt(30);
 		if (rndNr == 5){
 			happinessGainedLv0();
-			TamaGUI.textArea.setText("Your Tama is in a good mood" 
+			tg.setTextArea("Your Tama is in a good mood" 
 					+ "\nGained 600 Happiness");
 		}
 	}
 
-	//Thread Sleeper engine, 
+	//THREAD SLEEPER
 	private void depressionBuilder(int x){
 		tamaCurrentDepression -= depressionValue;
 		try {
@@ -94,11 +96,11 @@ public class DepressionEngine implements Runnable {
 	//warning message if depression reach a low point
 	private void depressionWarnings(){
 		if (tamaCurrentDepression <= 1000){
-			TamaGUI.textArea.setText("...I am so depressed");
+			tg.setTextArea("...I am so depressed");
 		}
 	}
 
-	//happiness gain/sink
+	//HAPPINESS GAINER/SINKER, VALUES AND METHODS
 	public void happinessLevel1(){
 		tamaCurrentDepression += -500;
 	}
@@ -115,7 +117,7 @@ public class DepressionEngine implements Runnable {
 		tamaCurrentDepression += 3000;
 	}
 
-	//Tama gain/sink happy when muse is used.
+	//MOUSE HAPPINESS GAINER/SINKER
 	public void mouseHappiness(){
 		tamaCurrentDepression += mouseHappiness;
 	}
@@ -123,7 +125,7 @@ public class DepressionEngine implements Runnable {
 		tamaCurrentDepression -= mouseHappinessSinker;
 	}
 
-	//Getters and setters
+	//OTHER GETTERS AND SETTERS
 	public boolean isDeathByDepression() {
 		return deathByDepression;
 	}

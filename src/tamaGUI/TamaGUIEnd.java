@@ -3,9 +3,12 @@ package tamaGUI;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
+
+import tamaSystem.GameEngine;
  
 /** TAMA GUI END, just the end gui
  * This GUI is to show some statistics/information
@@ -16,10 +19,16 @@ import javax.swing.JTextArea;
  */
 
 public class TamaGUIEnd{
-	
-	//STATIC, the end text. For score and more.
-	public static JTextArea textEndInfo;
-	
+
+	private JTextArea textEndInfo;
+	public JTextArea getTextEndInfo() {
+		return textEndInfo;
+	}
+	public void setTextEndInfo(String textEndInfo) {
+		this.textEndInfo.append(textEndInfo);
+	}
+
+
 	private JFrame frmTheEnd;
 	private final JButton btnThnxButton = new JButton("EXIT GAME");
 
@@ -29,6 +38,7 @@ public class TamaGUIEnd{
 	}
 
 	public TamaGUIEnd() {
+
 		initialize();
 	}
 
@@ -40,7 +50,7 @@ public class TamaGUIEnd{
 		frmTheEnd.setBounds(100, 100, 450, 300);
 		frmTheEnd.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmTheEnd.getContentPane().setLayout(null);
-		btnThnxButton.setToolTipText("Thank You For Playing Tama.v2");
+		btnThnxButton.setToolTipText("Thank You For Playing" + GameEngine.TAMA_VERSION);
 		btnThnxButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);

@@ -19,8 +19,10 @@ public class TalkingToTamaEngine {
 	private int dialogLevel;
 	private ArrayList <String> dontHaveTimeDialogs = new ArrayList<String>();
 	private ArrayList <String> dontHaveTimeDialogs2 = new ArrayList<String>();
+	private TamaGUI tg;
 
-	public TalkingToTamaEngine(){
+	public TalkingToTamaEngine(TamaGUI tg){
+		this.tg = tg;
 		dialogLister();
 	}
 	private void dialogLister(){
@@ -46,19 +48,19 @@ public class TalkingToTamaEngine {
 	//dont have time right now generator
 	public void dontHaveTimeATMStr(){
 		if(dialogLevel == 0){
-			TamaGUI.textArea.setText("..." + "The tolder seams to like your voice " + "\n");
+			tg.setTextArea("..." + "The tolder seams to like your voice " + "\n");
 
 		}
 		else if (dialogLevel == 2){
 			int tmp = intGenerator.nextInt(dontHaveTimeDialogs.size());
 			String dontHaveTimeATMStr = (dontHaveTimeDialogs.get(tmp));
-			TamaGUI.textArea.setText("..." + dontHaveTimeATMStr + "\n");
+			tg.setTextArea("..." + dontHaveTimeATMStr + "\n");
 
 		}
 		else if(dialogLevel == 3){
 			int tmp = intGenerator.nextInt(dontHaveTimeDialogs2.size());
 			String dontHaveTimeATMStr = (dontHaveTimeDialogs2.get(tmp));
-			TamaGUI.textArea.setText("..." + dontHaveTimeATMStr + "\n");
+			tg.setTextArea("..." + dontHaveTimeATMStr + "\n");
 
 		}
 	}

@@ -11,8 +11,8 @@ import tamaGUI.TamaGUIFace;
 import tamaGUI.TamaGUIStart;
 
 /**THE GAME ENGINE
- * 
- * Here is where the game loop and updater is.
+ * THE MASTER CLASS OF ALL CLASSES,
+ * THE CLASS THAT RULE THEM ALL,
  * 
  * 
  *
@@ -20,8 +20,17 @@ import tamaGUI.TamaGUIStart;
 
 public class GameEngine {
 
-	//GAME VERSION STATIC!
-	public static String TAMA_VERSION = "TamaProj 03.3";
+	//GAME VERSION, OH SNAP ITS STATIC!
+	public static String TAMA_VERSION = "<TamaProj 03.3> ";
+
+	//THE LOOP/ENGINE STOPPER, SHOULD BE CONNECTED TO ALL "4EVER" LOOPED THREAD.
+	private boolean ALL_TREADS_RUNNING = true;
+	public boolean isALL_TREADS_RUNNING() {
+		return ALL_TREADS_RUNNING;
+	}
+	public void setALL_TREADS_RUNNING(boolean aLL_TREADS_RUNNING) {
+		ALL_TREADS_RUNNING = aLL_TREADS_RUNNING;
+	}
 
 	private WinAndEndEngine we;
 	private DepressionEngine de;
@@ -38,17 +47,16 @@ public class GameEngine {
 		this.ge = ge;
 	}
 
-	private UserEngine ue;
-
-	private TamaGUILogIn tgli;
-	private TamaGUIEnd tge = new TamaGUIEnd();
+	private TamaGUIEnd tge;
 	private TamaGUIStart tgs;
 	private TamaGUI tg;
 	private TamaGUIFace tgf;
 
 	private MySQLEngine mysql;
+	private UserEngine ue;
+	private TamaGUILogIn tgli;
 
-	protected String tamaName = "";
+	private String tamaName = "";
 	public String getTamaName() {
 		return tamaName;
 	}
@@ -66,20 +74,21 @@ public class GameEngine {
 
 	private void initiater(){
 		this.tg = new TamaGUI();
+		this.tge = new TamaGUIEnd();
 
-		this.we = new WinAndEndEngine(tg);
-		this.de = new DepressionEngine(tg);
-		this.he = new HungerEngine(tg);
-		this.mo = new MoneyEngine(tg);
-		
-		this.di = new DialogEngine();
-		this.tt = new TalkingToTamaEngine();
-		this.se = new ScoreEngine();
+
+		this.de = new DepressionEngine(ge, tg);
+		this.he = new HungerEngine(ge, tg);
+		this.mo = new MoneyEngine(ge, tg);
+
+		this.di = new DialogEngine(ge, tg);
+		this.tt = new TalkingToTamaEngine(tg);
+		this.se = new ScoreEngine(ge, tge);
+		this.we = new WinAndEndEngine(ge, tg, tge, de, he);
 
 	}
 
 	public GameEngine(){
-		initiater();
 	}
 
 	private void threadStarter(){
@@ -100,46 +109,7 @@ public class GameEngine {
 		tgfEngine.start();
 	}
 
-
-	//	protected void deathAndWinChecker(String tamanName){
-	//		if (de.isDeathByDepression() == true){
-	//			we.deathByDepression(tamanName);
-	//			tg.GUIFrame.setVisible(false);
-	//		}
-	//		else if(he.isDeathByHunger() == true){
-	//			we.deathByHunger(tamaName);
-	//			tg.GUIFrame.setVisible(false);
-	//		}
-	//		else if (we.isWin() == true){
-	//			we.winning(tamaName);
-	//			tg.GUIFrame.setVisible(false);
-	//		}
-	//	}
-
-	//	protected void barUpdate(){
-	//		//for bars in TamaGUI
-	//		tg.setDepressionBar();	
-	//		tg.setMoneyBar();
-	//		tg.setHungerBar();
-	//	}
-
-	//	protected void mouseEventUpdater(){
-	//		for (int i = 0; i < tg.getMoneyMouseCounter(); i++) {
-	//			mo.moneyGain1();
-	//		}
-	//		tg.setMoneyMouseCounter(0);
-	//
-	//		for (int i = 0; i < tg.getMouseHappinessSinker(); i++) {
-	//			de.mouseHappinessSinker();
-	//		}
-	//		tg.setMouseHappinessSinker(0);
-	//
-	//		for (int i = 0; i < tg.getMouseGainHappiness(); i++) {
-	//			de.mouseHappiness();
-	//		}
-	//		tg.setMouseGainHappiness(0);
-	//	}
-
+	//LOGIN LUNCHER!
 	public void StartLogIn(){
 		this.tgli = new TamaGUILogIn();
 		this.ue = new UserEngine(tgli);
@@ -149,30 +119,24 @@ public class GameEngine {
 		this.tgli.loginStarter(ge, tgli, ue, mysql);
 	}
 
-
-
-	//The start luncher after log in.
+	//LAUNCHER AFTER LOG ING
+	//
 	public void GameGuiStart(){
 		tgs = new TamaGUIStart();
 		tgs.TamaStartGUIStarter(ge);
-
-
 	}
 
-	//The game main Game Gui.
+	//THE MAIN GAME GUI
 	public void GameGUI(int gameLevel, String frameTitle, String tamaName){
+		initiater();
+		
 		this.tamaName = tamaName;
 		this.gameLevel = gameLevel;
 
-//		this.tg = new TamaGUI(gameLevel, frameTitle, tamaName, he, mo, di, tt, de);		
-
 		tg.TamaGUI(gameLevel, frameTitle, tamaName, he, mo, di, tt, de);
-		this.tgf = new TamaGUIFace(tg, gameLevel, de, he);
-		this.we = new WinAndEndEngine(ge, tge, de, he);
-		
+		this.tgf = new TamaGUIFace(ge, tg, de, he);
+
 		de.setGameLevel(gameLevel);
-		he.setGameLevel(gameLevel);
-		mo.setGameLevel(gameLevel);
 
 		threadStarter();
 

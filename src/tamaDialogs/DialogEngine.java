@@ -7,8 +7,10 @@ import java.util.Random;
 
 
 
+
 import tamaGUI.TamaGUI;
 import tamaGUI.TamaGUIStart;
+import tamaSystem.GameEngine;
 
 /** TAMA DIALOGS CLASS
  * This class will generate dialogs for Tama to randomly say.
@@ -36,17 +38,20 @@ public class DialogEngine implements Runnable {
 	private ArrayList<String> dialogList2 = new ArrayList<String>();
 	private ArrayList<String> dialogList3 = new ArrayList<String>();
 
+	private GameEngine ge;
+	private TamaGUI tg;
+
 
 	private Random intGenerator = new Random();
 	private int randomNumber;
 	private int randomTimerCount;
 
-	//sets Dialog level
-	private int dialogLevel;
-
-	public DialogEngine(){	
+	public DialogEngine(GameEngine ge,TamaGUI tg){	
+		this.ge = ge;
+		this.tg = tg;
 	}
 
+	//STARTS THE DIALOG ARRAY LIST
 	private void dialogLister(){
 		dialogListLevel0();
 		dialogListLevel1();
@@ -66,7 +71,7 @@ public class DialogEngine implements Runnable {
 		dialogList0.add("(-.- )...");
 	}
 
-	// dialogs + add funktion on Level 1 (Easy) Baby Mode
+//DIALOG LEVEL 1, (EASY MODE) BABY 
 	private void dialogListLevel1(){
 		dialogList1.add("grrrlll.......");
 		dialogList1.add("hu?!?!?.......");
@@ -82,7 +87,7 @@ public class DialogEngine implements Runnable {
 		dialogList1.add("Daah..........");
 	}
 
-	// dialogs + add funktion on Level 2 (Normal) Kid Mode
+//DIALOG LEVEL 2, (NORMAL MODE) THE KID,
 	private void dialogListLevel2(){
 		dialogList2.add("Haaj");
 		dialogList2.add("I should cal a friend");
@@ -99,8 +104,7 @@ public class DialogEngine implements Runnable {
 		dialogList2.add("");
 	}
 
-	// dialogs + add funktion on Level 3 (Hard) Young Adult Mode
-	//Emo version if depression is low enough
+	//DIALOG LEVEL 3, (HARD MODE) YOUNG ADULT, EMO
 	private void dialogListLevel3(){
 		dialogList3.add("YOLO");
 		dialogList3.add("I HATE SCHOOL");
@@ -112,39 +116,35 @@ public class DialogEngine implements Runnable {
 		dialogList3.add("Why is the internet so slooooow!");
 		dialogList3.add("I love my new EyePhone!");
 		dialogList3.add("How can some people love TwatLight?");
+		dialogList3.add("This Whats App is awsome!");
 	}
 
-	// sets dialog level.
-	public void setDialogLevel(int x){
-		this.dialogLevel = dialogLevel + x;		
-	}
-
-	//timer and dialogs
+	//TIMER AND DIALOG GETTER
 	public void timerAndDialogs() throws InterruptedException{
 
-		TamaGUI.textArea.setText(dialogString + "\n");
+		tg.setTextArea(dialogString + "\n");
 		Thread.sleep(3000);
 
-		while(TamaGUIStart.ALL_THREADS_RUNNING == true){
+		while(ge.isALL_TREADS_RUNNING() == true){
 			randomTimerCount = intGenerator.nextInt(setRandomTimerGenerator);
 
-			if (dialogLevel == 1){
-				TamaGUI.textArea.setText(getRandomeDialogsLevel1() + "\n");
+			if (ge.getGameLevel() == 1){
+				tg.setTextArea(getRandomeDialogsLevel1() + "\n");
 			}
-			
-			else if (dialogLevel == 2){
-				TamaGUI.textArea.setText(getRandomeDialogsLevel2() + "\n");
+
+			else if (ge.getGameLevel() == 2){
+				tg.setTextArea(getRandomeDialogsLevel2() + "\n");
 
 			}				
-			else if (dialogLevel == 3){
-				TamaGUI.textArea.setText(getRandomDialogsLevel3() + "\n");
+			else if (ge.getGameLevel() == 3){
+				tg.setTextArea(getRandomDialogsLevel3() + "\n");
 			}
-			
+
 			Thread.sleep(randomTimerCount);
 		}
 	}
 
-	//random dialogs lv 1
+	//RANDOM DIALOG LV1, TURN ARRAY TO STRING
 	private String getRandomeDialogsLevel1(){
 		String getRandomeDialogsLevel1;
 		randomNumber = intGenerator.nextInt(dialogList1.size());
@@ -152,7 +152,7 @@ public class DialogEngine implements Runnable {
 		return getRandomeDialogsLevel1;
 	}
 
-	//randome dialogs lv 2
+	//RANDOM DIALOG LV2, TURN ARRAY TO STRING
 	private String getRandomeDialogsLevel2(){
 		String getRandomeDialogsLevel2;
 		randomNumber = intGenerator.nextInt(dialogList2.size());
@@ -160,7 +160,7 @@ public class DialogEngine implements Runnable {
 		return getRandomeDialogsLevel2;
 	}
 
-	//randome dialogs lv 3
+	//RANDOM DIALOG LV3, TURN ARRAY TO STRING
 	private String getRandomDialogsLevel3(){
 		String getRandomeDialogsLevel3;
 		randomNumber = intGenerator.nextInt(dialogList3.size());

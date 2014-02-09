@@ -21,86 +21,85 @@ public class WinAndEndEngine implements Runnable {
 	private DepressionEngine de;
 	private HungerEngine he;
 
-	//in seconds
+	//in seconds, 3600 = 1h
 	private int tamaWinTimer;
 
-	public WinAndEndEngine(GameEngine ge, TamaGUIEnd tge,
+	public WinAndEndEngine(GameEngine ge, TamaGUI tg, TamaGUIEnd tge,
 			DepressionEngine de, HungerEngine he){
 		this.ge = ge;
+		this.tg = tg;
 		this.tge = tge;
 		this.de = de;
 		this.he = he;
 	}
-	
-	public WinAndEndEngine(TamaGUI tg){
-		this.tg=tg;
+
+	public WinAndEndEngine(){
 	}
-	
+
 	private void deathAndWinChecker(){
 		if (de.isDeathByDepression() == true){
 			deathByDepression(ge.getTamaName());
 			tg.showGUI(false);
+			ge.setALL_TREADS_RUNNING(false);
 		}
 		else if(he.isDeathByHunger() == true){
 			deathByHunger(ge.getTamaName());
 			tg.showGUI(false);
+			ge.setALL_TREADS_RUNNING(false);
 		}
 		else if (isWin() == true){
 			winning(ge.getTamaName());
 			tg.showGUI(false);
+			ge.setALL_TREADS_RUNNING(false);
 		}
 	}
-	
+
 	//The loop, Win checker
 	@Override
 	public void run() {
 		tamaWinTimer = 3600;
+		
+		int x = 0;
 
-		if(ge.getGameLevel() == 3){
-
-		}
-		else if (ge.getGameLevel() <= 2){
-			int x = 0;
-			int z = 1;
-			while(z == 1){
-				if(tamaWinTimer <= x){
-					win = true;
-					z = 0;
-				}
-				else if (x != tamaWinTimer){
-					try {
-						deathAndWinChecker();
-						x++;
-						Thread.sleep(1000);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
+		while(ge.isALL_TREADS_RUNNING() == true){
+			if(tamaWinTimer <= x){
+				win = true;
+			}
+			else if (x != tamaWinTimer){
+				try {
+					deathAndWinChecker();
+					x++;
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
 			}
 		}
+
 	}
 
+
 	public void deathByHunger(String tamaName){
-		TamaGUIEnd.textEndInfo.append("YOUR TAMA DIED OF HUNGER \n");
-		TamaGUIEnd.textEndInfo.append("RIP " + tamaName + "\n\n");
-		TamaGUIStart.ALL_THREADS_RUNNING = false;
+		tge.setTextEndInfo("YOUR TAMA DIED OF HUNGER \n");
+		tge.setTextEndInfo("RIP " + tamaName + "\n\n");
+		ge.setALL_TREADS_RUNNING(false);
 		tge.tamaEndGUIStarter();
 	}
 
 	public void deathByDepression(String tamaName){
-		TamaGUIEnd.textEndInfo.append("YOUR TAMA DIED OF DEPRESSION \n");
-		TamaGUIEnd.textEndInfo.append("RIP " + tamaName +"\n\n");
-		TamaGUIStart.ALL_THREADS_RUNNING = false;
+		tge.setTextEndInfo("YOUR TAMA DIED OF DEPRESSION \n");
+		tge.setTextEndInfo("RIP " + tamaName +"\n\n");
+		ge.setALL_TREADS_RUNNING(false);
 		tge.tamaEndGUIStarter();
 	}
 
 	public void winning(String tamaName){
-		TamaGUIEnd.textEndInfo.append("YOU WIN \n");
-		TamaGUIEnd.textEndInfo.append(tamaName + " is all grown up now!\n\n");
-		TamaGUIStart.ALL_THREADS_RUNNING = false;
+		tge.setTextEndInfo("YOU WIN \n");
+		tge.setTextEndInfo(tamaName + " is all grown up now!\n\n");
+		ge.setALL_TREADS_RUNNING(false);
 		tge.tamaEndGUIStarter();
 	}
-	
+
 	public boolean isWin() {
 		return win;
 	}

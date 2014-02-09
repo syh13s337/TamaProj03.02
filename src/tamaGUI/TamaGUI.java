@@ -39,7 +39,14 @@ public class TamaGUI extends JFrame implements MouseListener {
 	//STATIC variables, so everyone can touch them for upgrade/graphic purpose.
 	private JFrame GUIFrame;
 	private JLabel label = new JLabel();
-	public static TextArea textArea;
+	private TextArea textArea;
+	public TextArea getTextArea() {
+		return textArea;
+	}
+	public void setTextArea(String textArea) {
+		this.textArea.setText(textArea);
+	}
+
 	private int gameLevel;
 	private JProgressBar hungerBar;
 	private JProgressBar moneyBar;
@@ -91,34 +98,18 @@ public class TamaGUI extends JFrame implements MouseListener {
 	private DepressionEngine de;
 	private HungerEngine he;
 	private MoneyEngine mo;
-	private DialogEngine di;
+	private DialogEngine di; //NOT IN USE YET, FUTURE FUNKTIONS!
 	private TalkingToTamaEngine tt;
-
-	//A constructor that takes variables and objects
-//	public TamaGUI(int lvNr, String frameTitle, String tamaName, HungerEngine he, MoneyEngine mo,
-//			DialogEngine di, TalkingToTamaEngine tt, DepressionEngine de) {
-//		gameLevel = lvNr;
-//		buttonNames(lvNr);
-//		initialize(frameTitle, tamaName);
-//		di.setDialogLevel(lvNr);
-//		tt.setDialogLevel(lvNr);
-//
-//		this.he = he;
-//		this.mo = mo;
-//		this.di = di;
-//		this.tt = tt;
-//		this.de = de;
-//	}
 
 	public TamaGUI(){
 	}
-	
+
+	//THE MAIN METHOD TO GET OBJECT FOR GUI
 	public void TamaGUI(int lvNr, String frameTitle, String tamaName, HungerEngine he, MoneyEngine mo,
 			DialogEngine di, TalkingToTamaEngine tt, DepressionEngine de) {
 		gameLevel = lvNr;
 		buttonNames(lvNr);
 		initialize(frameTitle, tamaName);
-		di.setDialogLevel(lvNr);
 		tt.setDialogLevel(lvNr);
 
 		this.he = he;
@@ -126,10 +117,8 @@ public class TamaGUI extends JFrame implements MouseListener {
 		this.di = di;
 		this.tt = tt;
 		this.de = de;
-		
-		
 	}
-	
+
 	//TAKES IN A BOOLEAN TO SHOW/HIDE GUI FRAME
 	public void showGUI(boolean show){
 		GUIFrame.setVisible(show);
@@ -139,7 +128,7 @@ public class TamaGUI extends JFrame implements MouseListener {
 		GUIFrame = new JFrame();
 		GUIFrame.getContentPane().setBackground(Color.WHITE);
 		GUIFrame.setResizable(false);
-		GUIFrame.setTitle(GameEngine.TAMA_VERSION + " " + TamaName + frameTitle);
+		GUIFrame.setTitle(GameEngine.TAMA_VERSION + " " + frameTitle + TamaName);
 		GUIFrame.setBounds(100, 100, 669, 366);
 		GUIFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GUIFrame.getContentPane().setLayout(null);
@@ -185,7 +174,7 @@ public class TamaGUI extends JFrame implements MouseListener {
 		label.setBounds(142, 46, 201, 244);
 		GUIFrame.add(label);	
 
-		//play level 1 button
+		//PLAY BUTTON LEVEL 1
 		btnPlay1 = new JButton(buttonNames.get(0));
 		btnPlay1.setToolTipText(tooltips.get(0));
 		btnPlay1.addActionListener(new ActionListener() {
@@ -196,6 +185,7 @@ public class TamaGUI extends JFrame implements MouseListener {
 		btnPlay1.setBounds(15, 47, 115, 29);
 		GUIFrame.getContentPane().add(btnPlay1);
 
+		//PLAY BUTTON LEVEL 2
 		btnPlay2 = new JButton(buttonNames.get(1));
 		btnPlay2.setToolTipText(tooltips.get(1));
 		btnPlay2.addActionListener(new ActionListener() {
@@ -206,6 +196,7 @@ public class TamaGUI extends JFrame implements MouseListener {
 		btnPlay2.setBounds(15, 87, 115, 29);
 		GUIFrame.getContentPane().add(btnPlay2);
 
+		//FOOD BUTTON LEVEL 1
 		btnFood1 = new JButton(buttonNames.get(2));
 		btnFood1.setToolTipText(tooltips.get(2));
 		btnFood1.addActionListener(new ActionListener() {
@@ -216,6 +207,7 @@ public class TamaGUI extends JFrame implements MouseListener {
 		btnFood1.setBounds(15, 172, 115, 29);
 		GUIFrame.getContentPane().add(btnFood1);
 
+		//FOOD BUTTON LEVEL 2
 		btnFood2 = new JButton(buttonNames.get(3));
 		btnFood2.setToolTipText(tooltips.get(3));
 		btnFood2.addActionListener(new ActionListener() {
@@ -226,6 +218,7 @@ public class TamaGUI extends JFrame implements MouseListener {
 		btnFood2.setBounds(15, 213, 115, 29);
 		GUIFrame.getContentPane().add(btnFood2);
 
+		//FOOD BUTTON LEVEL 3
 		btnFood3 = new JButton(buttonNames.get(4));
 		btnFood3.setToolTipText(tooltips.get(4));
 		btnFood3.addActionListener(new ActionListener() {
@@ -238,7 +231,7 @@ public class TamaGUI extends JFrame implements MouseListener {
 		GUIFrame.addMouseListener(this);
 	}
 
-	//method that adds strings in to arraylist.
+	//ARRAY METHOD LIST FOR BUTTON NAMES
 	private void buttonNames(int gameLevel){
 		if (gameLevel == 1){
 			buttonNames.add("Tickle ");
@@ -303,7 +296,7 @@ public class TamaGUI extends JFrame implements MouseListener {
 		}
 	}
 
-	//sets and updates DepressionBar, trigged by GameEngine
+	//SET AND UPDATE DEPRESSION BAR, TRIGGED BY DEPRESSINENGINE CLASS
 	public void setDepressionBar(){
 		int deppresionValue = de.getTamaCurrentDepression();
 		depressionBar.setString("Happiness: " + Integer.toString(deppresionValue));
@@ -356,7 +349,7 @@ public class TamaGUI extends JFrame implements MouseListener {
 
 	}
 
-	//sets and updates moneyBar, trigged by GameEngine
+	//SET AND UPDATE MONEYBAR, TRIGGED BY MONEYENGINE CLASS
 	public void setMoneyBar(){
 		int moneyValue = mo.getCurrentMoney();
 		moneyBar.setString(Integer.toString(moneyValue) + " Pesoh");
@@ -391,7 +384,7 @@ public class TamaGUI extends JFrame implements MouseListener {
 
 	}
 
-	//sets and updates hungerBar, trigged by GameEngine
+	//SET AND UPDATE HUNGERBAR, TRIGGED BY HUNGERENGINE CLASS
 	public void setHungerBar(){
 		int hungerValue = he.getTamaCurrentHunger();
 		hungerBar.setString("Hunger: " + Integer.toString(hungerValue));
@@ -445,9 +438,10 @@ public class TamaGUI extends JFrame implements MouseListener {
 		}
 	}
 
+	//ANIMATION UPDATER
 	public void labelUpdater(ImageIcon tmp){
 		label.setIcon(tmp);
-		}
+	}
 
 	private void buttonPlay1(){
 		if (gameLevel == 1){

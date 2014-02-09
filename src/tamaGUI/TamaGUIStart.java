@@ -23,7 +23,10 @@ import java.awt.event.ActionEvent;
 
 public class TamaGUIStart extends JFrame {
 
-	public static boolean ALL_THREADS_RUNNING = true;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private String tamaName = "";
 	private int gamleLevel;
@@ -60,7 +63,7 @@ public class TamaGUIStart extends JFrame {
 
 		//start text
 		InfoText = new JTextArea();
-		InfoText.setText("Hi! You are now playing Tama.v2"
+		InfoText.setText("Hi! You are now playing: " + GameEngine.TAMA_VERSION 
 				+ "\n"
 				+ "\nThe levels:"
 				+ "\nLevel, 1 Baby mode"
@@ -107,7 +110,7 @@ public class TamaGUIStart extends JFrame {
 					tamaName = txtEnterTamaName.getText();
 					frmTamav.setVisible(false);
 
-					ge.GameGUI(1, " : Baby (EasyMode)", tamaName);
+					ge.GameGUI(1, " Baby (EasyMode) ", tamaName);
 
 				}
 				else {	
@@ -127,7 +130,7 @@ public class TamaGUIStart extends JFrame {
 					tamaName = txtEnterTamaName.getText();
 					frmTamav.setVisible(false);
 
-					ge.GameGUI(2, " : The Kid (NormalMode)", tamaName);
+					ge.GameGUI(2, " The Kid (NormalMode) ", tamaName);
 
 				}
 				else {	
@@ -146,7 +149,7 @@ public class TamaGUIStart extends JFrame {
 					tamaName = txtEnterTamaName.getText();
 					frmTamav.setVisible(false);
 
-					ge.GameGUI(3, " : Young Adult (HardMode)", tamaName);
+					ge.GameGUI(3, " Young Adult (HardMode) ", tamaName);
 
 
 				}

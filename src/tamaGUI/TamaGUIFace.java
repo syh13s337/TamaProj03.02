@@ -6,6 +6,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 import tamaSystem.DepressionEngine;
+import tamaSystem.GameEngine;
 import tamaSystem.HungerEngine;
 
 
@@ -27,17 +28,18 @@ public class TamaGUIFace implements Runnable {
 
 	private ArrayList <ImageIcon> faces;
 	private TamaGUI tg;
-	private int gameLevel;
+	private GameEngine ge;
 	private DepressionEngine de;
 	private HungerEngine he;
+	
 	private ImageIcon tmp;
 	private int x = 0;
 	private int y = 7;
 
 
-	public TamaGUIFace(TamaGUI tg, int gameLevel, DepressionEngine de, HungerEngine he){
+	public TamaGUIFace(GameEngine ge, TamaGUI tg, DepressionEngine de, HungerEngine he){
+		this.ge = ge;
 		this.tg = tg;
-		this.gameLevel = gameLevel;
 		this.de = de;
 		this.he = he;
 	}
@@ -62,7 +64,7 @@ public class TamaGUIFace implements Runnable {
 	private void loadpics(){
 		faces = new ArrayList <ImageIcon>();
 
-		if (gameLevel == 1) {
+		if (ge.getGameLevel() == 1) {
 			faces.add(new ImageIcon("image/Baby/b2.png"));
 			faces.add(new ImageIcon("image/Baby/b3.png"));
 			faces.add(new ImageIcon("image/Baby/b4.png"));
@@ -74,7 +76,7 @@ public class TamaGUIFace implements Runnable {
 			faces.add(new ImageIcon("image/Baby/bs2.png"));
 			faces.add(new ImageIcon("image/Baby/bs3.png"));
 		}
-		else if (gameLevel == 2) {
+		else if (ge.getGameLevel() == 2) {
 			faces.add(new ImageIcon("image/Kid/b2.png"));
 			faces.add(new ImageIcon("image/Kid/b3.png"));
 			faces.add(new ImageIcon("image/Kid/b4.png"));
@@ -86,7 +88,7 @@ public class TamaGUIFace implements Runnable {
 			faces.add(new ImageIcon("image/Kid/bs2.png"));
 			faces.add(new ImageIcon("image/Kid/bs3.png"));
 		}
-		else if (gameLevel == 3) {
+		else if (ge.getGameLevel() == 3) {
 			faces.add(new ImageIcon("image/YA/b2.png"));
 			faces.add(new ImageIcon("image/YA/b3.png"));
 			faces.add(new ImageIcon("image/YA/b4.png"));
@@ -104,7 +106,7 @@ public class TamaGUIFace implements Runnable {
 	public void run() {
 		loadpics();
 
-		while(TamaGUIStart.ALL_THREADS_RUNNING == true){
+		while(ge.isALL_TREADS_RUNNING() == true){
 			try {
 				animationUpdater();
 				Thread.sleep(3000);

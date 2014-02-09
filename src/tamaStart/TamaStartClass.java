@@ -20,7 +20,6 @@ package tamaStart;
  * 
  */
 
-import tamaGUI.TamaGUIStart;
 import tamaSystem.GameEngine;
 
 public class TamaStartClass {

@@ -3,7 +3,7 @@ package tamaSystem;
 import java.text.DecimalFormat;
 
 import tamaGUI.TamaGUIEnd;
-import tamaGUI.TamaGUIStart;
+
 
 /** SCORE ENGINE CLASS
  * This class will do:
@@ -12,7 +12,18 @@ import tamaGUI.TamaGUIStart;
  * 
  */
 public class ScoreEngine implements Runnable {
-	public static int theScore;
+	
+	private GameEngine ge;
+	private TamaGUIEnd tge;
+	
+	private int theScore;
+	public int getTheScore() {
+		return theScore;
+	}
+	public void setTheScore(int theScore) {
+		this.theScore = theScore;
+	}
+
 	private double scoreCounter;
 	private double hAlive;
 	private double dAlive;
@@ -21,7 +32,9 @@ public class ScoreEngine implements Runnable {
 
 	private DecimalFormat df = new DecimalFormat("0.00");  
 
-	public ScoreEngine(){
+	public ScoreEngine(GameEngine ge, TamaGUIEnd tge){
+		this.ge = ge;
+		this.tge = tge;
 	}
 
 	public void totalAliveTime(){
@@ -29,13 +42,14 @@ public class ScoreEngine implements Runnable {
 		dAlive = scoreCounter/144;
 		mAlive = scoreCounter/4320;
 		yAlive = scoreCounter/51840;
-
-		TamaGUIEnd.textEndInfo.append("Total Alive Time, in Tama Time: \n");
-		TamaGUIEnd.textEndInfo.append("Houres Alive: " + df.format(hAlive) + "\n");
-		TamaGUIEnd.textEndInfo.append("Days Alive: " + df.format(dAlive) + "\n");
-		TamaGUIEnd.textEndInfo.append("Month Alive: " + df.format(mAlive) + "\n");
-		TamaGUIEnd.textEndInfo.append("Years Alive: " + df.format(yAlive) + "\n");
-		TamaGUIEnd.textEndInfo.append("\nyour score is: " + (scoreCounter) +"\n");
+		
+		tge.setTextEndInfo("Total Alive Time, in Tama Time: "
+				+ "\n"
+				+ "\nHoures Alive: " + df.format(hAlive)
+				+ "\nDays Alive: " + df.format(dAlive)
+				+ "\nMonth Alive: " + df.format(mAlive)
+				+ "\nYears Alive: " + df.format(yAlive)
+				+ "\nyour score is: " + (scoreCounter) +"\n");
 	}
 
 	@Override
@@ -43,12 +57,12 @@ public class ScoreEngine implements Runnable {
 		scoreCounter = 0;
 		int z = 1;
 		while(z == 1){
-			if (TamaGUIStart.ALL_THREADS_RUNNING == false){
+			if (ge.isALL_TREADS_RUNNING() == false){
 				totalAliveTime();
 				z = 0;
 				break;
 			}
-			else if (TamaGUIStart.ALL_THREADS_RUNNING == true){
+			else if (ge.isALL_TREADS_RUNNING() == true){
 				try {
 					this.scoreCounter += 10;
 					Thread.sleep(1000);
